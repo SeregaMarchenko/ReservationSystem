@@ -1,5 +1,6 @@
 package com.example.reservationsystem.controller;
 
+import com.example.reservationsystem.exeption.CustomValidException;
 import com.example.reservationsystem.model.User;
 import com.example.reservationsystem.model.dto.UserCreateDto;
 import com.example.reservationsystem.service.UserService;
@@ -49,7 +50,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<HttpStatus> createUser(@RequestBody @Valid UserCreateDto user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            //throw new CustomValidException(bindingResult.getAllErrors().toString());
+            throw new CustomValidException(bindingResult.getAllErrors().toString());
         }
         if (userService.createUser(user)) {
             return new ResponseEntity<>(HttpStatus.CREATED);
