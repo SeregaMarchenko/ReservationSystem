@@ -1,9 +1,9 @@
 package com.example.reservationsystem.controller;
 
 import com.example.reservationsystem.exeption.CustomValidException;
-import com.example.reservationsystem.model.Place;
-import com.example.reservationsystem.model.dto.PlaceCreateDto;
-import com.example.reservationsystem.service.PlaceService;
+import com.example.reservationsystem.model.Event;
+import com.example.reservationsystem.model.dto.EventCreateDto;
+import com.example.reservationsystem.service.EventService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,51 +24,52 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/place")
-public class PlaceController {
-    private final PlaceService placeService;
+@RequestMapping("/event")
+public class EventController {
+    private final EventService eventService;
+
 
     @Autowired
-    public PlaceController(PlaceService placeService) {
-        this.placeService = placeService;
+    public EventController(EventService eventService) {
+        this.eventService = eventService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Place>> getAllPlaces() {
-        Optional<List<Place>> result = placeService.getAllPlaces();
-        return result.map(places -> new ResponseEntity<>(places, HttpStatus.OK))
+    public ResponseEntity<List<Event>> getAllEvents() {
+        Optional<List<Event>> result = eventService.getAllEvents();
+        return result.map(events -> new ResponseEntity<>(events, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Place> getPlaceById(@PathVariable("id") Long id) {
-        Optional<Place> result = placeService.getPlaceById(id);
-        return result.map(place -> new ResponseEntity<>(place, HttpStatus.OK))
+    public ResponseEntity<Event> getEventById(@PathVariable("id") Long id) {
+        Optional<Event> result = eventService.getEventById(id);
+        return result.map(event -> new ResponseEntity<>(event, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createPlace(@RequestBody @Valid PlaceCreateDto place, BindingResult bindingResult) {
+    public ResponseEntity<HttpStatus> createEvent(@RequestBody @Valid EventCreateDto event, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new CustomValidException(bindingResult.getAllErrors().toString());
         }
-        if (placeService.createPlace(place)) {
+        if (eventService.createEvent(event)) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @PutMapping
-    public ResponseEntity<HttpStatus> updatePlace(@RequestBody Place place) {
-        if (placeService.updatePlace(place)) {
+    public ResponseEntity<HttpStatus> updateEvent(@RequestBody Event event) {
+        if (eventService.updateEvent(event)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deletePlaceById(@PathVariable("id") Long id) {
-        if (placeService.deletePlaceById(id)) {
+    public ResponseEntity<HttpStatus> deleteEventById(@PathVariable("id") Long id) {
+        if (eventService.deleteEventById(id)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
