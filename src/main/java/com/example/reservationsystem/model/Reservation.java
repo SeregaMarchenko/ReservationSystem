@@ -36,7 +36,7 @@ public class Reservation {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @Column(name = "reservationDate", nullable = false)
+    @Column(name = "reservation_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp reservationDate;
 

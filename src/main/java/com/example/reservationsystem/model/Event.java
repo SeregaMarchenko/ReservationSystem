@@ -35,7 +35,7 @@ public class Event {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "reservationDate", nullable = false)
+    @Column(name = "reservation_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp reservationDate;
 

@@ -57,6 +57,9 @@ public class UserService {
             if (user.getAge() != null) {
                 userFromDB.setAge(user.getAge());
             }
+            userFromDB.setUserSecurity(user.getUserSecurity());
+            userFromDB.setReviews(user.getReviews());
+            userFromDB.setReservations(user.getReservations());
             userFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             User updateUser = userRepository.saveAndFlush(userFromDB);
             return updateUser.equals(userFromDB);
