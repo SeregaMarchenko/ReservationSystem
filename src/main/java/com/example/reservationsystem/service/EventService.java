@@ -59,13 +59,10 @@ public class EventService {
                 eventFromDB.setReservationDate(event.getReservationDate());
             }
             eventFromDB.setDescription(event.getDescription());
-            eventFromDB.setLocation(event.getLocation());
             eventFromDB.setReviews(event.getReviews());
             eventFromDB.setReservations(event.getReservations());
-            eventFromDB.setName(event.getName());
-            eventFromDB.setCapacity(event.getCapacity());
-            eventFromDB.setReservationDate(event.getReservationDate());
-            event.setImages(event.getImages());
+            eventFromDB.setImages(event.getImages());
+            eventFromDB.setPlace(event.getPlace());
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
         }

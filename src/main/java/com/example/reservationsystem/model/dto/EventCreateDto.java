@@ -1,5 +1,6 @@
 package com.example.reservationsystem.model.dto;
 
+import com.example.reservationsystem.annotation.FutureTimestamp;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ public class EventCreateDto {
     private String name;
 
     @NotNull
+    @FutureTimestamp
     private Timestamp reservationDate;
 
     @NotNull
