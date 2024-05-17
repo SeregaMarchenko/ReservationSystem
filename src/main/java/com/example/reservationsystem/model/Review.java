@@ -34,13 +34,13 @@ public class Review {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @Column(nullable = false)
+    @Column(name = "rating", nullable = false)
     private int rating;
 
-    @Column(nullable = false)
+    @Column(name = "comment")
     private String comment;
 
-    @Column(nullable = false)
+    @Column(name = "date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp date;
 }
