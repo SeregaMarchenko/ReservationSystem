@@ -3,6 +3,10 @@ package com.example.reservationsystem.controller;
 import com.example.reservationsystem.exeption.CustomValidException;
 import com.example.reservationsystem.model.Place;
 import com.example.reservationsystem.model.dto.create.PlaceCreateDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateNameDto;
+import com.example.reservationsystem.model.dto.update.place.PlaceUpdateDescriptionDto;
+import com.example.reservationsystem.model.dto.update.place.PlaceUpdateLocationDto;
+import com.example.reservationsystem.model.dto.update.place.PlaceUpdateNameDto;
 import com.example.reservationsystem.service.PlaceService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +65,30 @@ public class PlaceController {
     @PutMapping
     public ResponseEntity<HttpStatus> updatePlace(@RequestBody Place place) {
         if (placeService.updatePlace(place)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/name")
+    public ResponseEntity<HttpStatus> updatePlaceName(@RequestBody @Valid PlaceUpdateNameDto place) {
+        if (placeService.updatePlaceName(place)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/location")
+    public ResponseEntity<HttpStatus> updatePlaceLocation(@RequestBody @Valid PlaceUpdateLocationDto place) {
+        if (placeService.updatePlaceLocation(place)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/description")
+    public ResponseEntity<HttpStatus> updatePlaceDescription(@RequestBody @Valid PlaceUpdateDescriptionDto place) {
+        if (placeService.updatePlaceDescription(place)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);

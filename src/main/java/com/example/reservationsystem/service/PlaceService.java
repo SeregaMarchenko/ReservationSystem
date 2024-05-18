@@ -1,7 +1,12 @@
 package com.example.reservationsystem.service;
 
+import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Place;
 import com.example.reservationsystem.model.dto.create.PlaceCreateDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateNameDto;
+import com.example.reservationsystem.model.dto.update.place.PlaceUpdateDescriptionDto;
+import com.example.reservationsystem.model.dto.update.place.PlaceUpdateLocationDto;
+import com.example.reservationsystem.model.dto.update.place.PlaceUpdateNameDto;
 import com.example.reservationsystem.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -53,6 +58,39 @@ public class PlaceService {
                 placeFromDB.setName(place.getName());
             }
             placeFromDB.setDescription(place.getDescription());
+            Place updatePlace = placeRepository.saveAndFlush(placeFromDB);
+            return updatePlace.equals(placeFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updatePlaceName(PlaceUpdateNameDto place) {
+        Optional<Place> placeFromDBOptional = placeRepository.findById(place.getId());
+        if (placeFromDBOptional.isPresent()) {
+            Place placeFromDB = placeFromDBOptional.get();
+            placeFromDB.setName(place.getName());
+            Place updatePlace = placeRepository.saveAndFlush(placeFromDB);
+            return updatePlace.equals(placeFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updatePlaceDescription(PlaceUpdateDescriptionDto place) {
+        Optional<Place> placeFromDBOptional = placeRepository.findById(place.getId());
+        if (placeFromDBOptional.isPresent()) {
+            Place placeFromDB = placeFromDBOptional.get();
+            placeFromDB.setDescription(place.getDescription());
+            Place updatePlace = placeRepository.saveAndFlush(placeFromDB);
+            return updatePlace.equals(placeFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updatePlaceLocation(PlaceUpdateLocationDto place) {
+        Optional<Place> placeFromDBOptional = placeRepository.findById(place.getId());
+        if (placeFromDBOptional.isPresent()) {
+            Place placeFromDB = placeFromDBOptional.get();
+            placeFromDB.setName(place.getLocation());
             Place updatePlace = placeRepository.saveAndFlush(placeFromDB);
             return updatePlace.equals(placeFromDB);
         }

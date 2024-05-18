@@ -91,9 +91,7 @@ public class EventService {
         Optional<Event> eventFromDBOptional = eventRepository.findById(event.getId());
         if (eventFromDBOptional.isPresent()) {
             Event eventFromDB = eventFromDBOptional.get();
-            if (event.getName() != null) {
-                eventFromDB.setName(event.getName());
-            }
+            eventFromDB.setName(event.getName());
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
         }
@@ -104,9 +102,7 @@ public class EventService {
         Optional<Event> eventFromDBOptional = eventRepository.findById(event.getId());
         if (eventFromDBOptional.isPresent()) {
             Event eventFromDB = eventFromDBOptional.get();
-            if (event.getDescription() != null) {
-                eventFromDB.setDescription(event.getDescription());
-            }
+            eventFromDB.setDescription(event.getDescription());
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
         }
@@ -117,9 +113,7 @@ public class EventService {
         Optional<Event> eventFromDBOptional = eventRepository.findById(event.getId());
         if (eventFromDBOptional.isPresent()) {
             Event eventFromDB = eventFromDBOptional.get();
-            if (event.getLocation() != null) {
-                eventFromDB.setLocation(event.getLocation());
-            }
+            eventFromDB.setLocation(event.getLocation());
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
         }
@@ -132,7 +126,7 @@ public class EventService {
             Event eventFromDB = eventFromDBOptional.get();
             if (event.getCapacity() >= eventFromDB.getCapacity()) {
                 eventFromDB.setCapacity(event.getCapacity());
-            }else {
+            } else {
                 throw new IncorrectCapacityException("The number of reserves seats is more than the total number of seats indicated");
             }
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
@@ -161,9 +155,7 @@ public class EventService {
         Optional<Event> eventFromDBOptional = eventRepository.findById(event.getId());
         if (eventFromDBOptional.isPresent()) {
             Event eventFromDB = eventFromDBOptional.get();
-            if (event.getReservationDate() != null) {
-                eventFromDB.setReservationDate(event.getReservationDate());
-            }
+            eventFromDB.setReservationDate(event.getReservationDate());
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
         }
