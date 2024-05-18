@@ -3,6 +3,8 @@ package com.example.reservationsystem.controller;
 import com.example.reservationsystem.exeption.CustomValidException;
 import com.example.reservationsystem.model.Reservation;
 import com.example.reservationsystem.model.dto.create.ReservationCreateDto;
+import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateEventIdDto;
+import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateUserIdDto;
 import com.example.reservationsystem.service.ReservationService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +63,22 @@ public class ReservationController {
     @PutMapping
     public ResponseEntity<HttpStatus> updateReservation(@RequestBody Reservation reservation) {
         if (reservationService.updateReservation(reservation)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/user_id")
+    public ResponseEntity<HttpStatus> updateReservationUserId(@RequestBody @Valid ReservationUpdateUserIdDto reservation) {
+        if (reservationService.updateReservationUserId(reservation)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/event_id")
+    public ResponseEntity<HttpStatus> updateReservationEventId(@RequestBody @Valid ReservationUpdateEventIdDto reservation) {
+        if (reservationService.updateReservationEventId(reservation)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);

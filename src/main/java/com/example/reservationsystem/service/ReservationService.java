@@ -6,6 +6,8 @@ import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Reservation;
 import com.example.reservationsystem.model.User;
 import com.example.reservationsystem.model.dto.create.ReservationCreateDto;
+import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateEventIdDto;
+import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateUserIdDto;
 import com.example.reservationsystem.repository.EventRepository;
 import com.example.reservationsystem.repository.ReservationRepository;
 import com.example.reservationsystem.repository.UserRepository;
@@ -79,6 +81,38 @@ public class ReservationService {
             }
             reservationFromDB.setEvent(reservation.getEvent());
             reservationFromDB.setUser(reservation.getUser());
+            Reservation updateReservation = reservationRepository.saveAndFlush(reservationFromDB);
+            return updateReservation.equals(reservationFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updateReservationUserId(ReservationUpdateUserIdDto reservation) {
+        Optional<Reservation> reservationFromDBOptional = reservationRepository.findById(reservation.getId());
+        if (reservationFromDBOptional.isPresent()) {
+            Reservation reservationFromDB = reservationFromDBOptional.get();
+            Optional<User> userFromDB = userRepository.findById(reservation.getUser_id());
+            if (userFromDB.isPresent()) {
+                reservationFromDB.setUser(userFromDB.get());
+            } else {
+                throw new NoSuchElementException("User not found.");
+            }
+            Reservation updateReservation = reservationRepository.saveAndFlush(reservationFromDB);
+            return updateReservation.equals(reservationFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updateReservationEventId(ReservationUpdateEventIdDto reservation) {
+        Optional<Reservation> reservationFromDBOptional = reservationRepository.findById(reservation.getId());
+        if (reservationFromDBOptional.isPresent()) {
+            Reservation reservationFromDB = reservationFromDBOptional.get();
+            Optional<Event> eventFromDB = eventRepository.findById(reservation.getUser_id());
+            if (eventFromDB.isPresent()) {
+                reservationFromDB.setEvent(eventFromDB.get());
+            } else {
+                throw new NoSuchElementException("Event not found.");
+            }
             Reservation updateReservation = reservationRepository.saveAndFlush(reservationFromDB);
             return updateReservation.equals(reservationFromDB);
         }
