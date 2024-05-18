@@ -1,7 +1,6 @@
 package com.example.reservationsystem.security.model;
 
 import com.example.reservationsystem.model.User;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

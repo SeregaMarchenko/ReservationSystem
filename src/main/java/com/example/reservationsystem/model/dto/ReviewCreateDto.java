@@ -6,8 +6,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
-
 @Data
 @Component
 public class ReviewCreateDto {
@@ -19,5 +17,8 @@ public class ReviewCreateDto {
     private String comment;
 
     @NotNull
-    private Timestamp date;
+    private Long user_id;
+
+    @NotNull
+    private Long event_id;
 }

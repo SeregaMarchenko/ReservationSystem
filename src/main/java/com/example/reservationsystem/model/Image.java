@@ -1,5 +1,6 @@
 package com.example.reservationsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,10 +29,12 @@ public class Image {
     private byte[] data;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "place_id")
     private Place place;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "event_id")
     private Event event;
 

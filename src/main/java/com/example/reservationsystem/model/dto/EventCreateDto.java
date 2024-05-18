@@ -1,6 +1,7 @@
 package com.example.reservationsystem.model.dto;
 
 import com.example.reservationsystem.annotation.FutureTimestamp;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ public class EventCreateDto {
 
     @NotNull
     @FutureTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Timestamp reservationDate;
 
     @NotNull
@@ -31,4 +33,7 @@ public class EventCreateDto {
     @Min(1)
     @Max(10000)
     private int capacity;
+
+    @NotNull
+    private Long place_id;
 }

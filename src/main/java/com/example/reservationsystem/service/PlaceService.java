@@ -18,7 +18,7 @@ public class PlaceService {
         this.placeRepository = placeRepository;
     }
 
-    public Optional<List<Place>> getAllPlaces(){
+    public Optional<List<Place>> getAllPlaces() {
         return Optional.of(placeRepository.findAll());
     }
 
@@ -51,8 +51,6 @@ public class PlaceService {
                 placeFromDB.setName(place.getName());
             }
             placeFromDB.setDescription(place.getDescription());
-            placeFromDB.setEvents(place.getEvents());
-            placeFromDB.setImages(place.getImages());
             Place updatePlace = placeRepository.saveAndFlush(placeFromDB);
             return updatePlace.equals(placeFromDB);
         }

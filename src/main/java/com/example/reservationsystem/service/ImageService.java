@@ -1,21 +1,31 @@
 package com.example.reservationsystem.service;
 
+import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Image;
+import com.example.reservationsystem.model.Place;
 import com.example.reservationsystem.model.dto.ImageCreateDto;
+import com.example.reservationsystem.repository.EventRepository;
 import com.example.reservationsystem.repository.ImageRepository;
+import com.example.reservationsystem.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 public class ImageService {
     private final ImageRepository imageRepository;
+    private final PlaceRepository placeRepository;
+    private final EventRepository eventRepository;
 
     @Autowired
-    public ImageService(ImageRepository imageRepository) {
+    public ImageService(ImageRepository imageRepository, PlaceRepository placeRepository, EventRepository eventRepository) {
         this.imageRepository = imageRepository;
+        this.placeRepository = placeRepository;
+        this.eventRepository = eventRepository;
     }
 
     public Optional<List<Image>> getAllImages() {
@@ -26,9 +36,17 @@ public class ImageService {
         return imageRepository.findById(id);
     }
 
+    @Transactional(rollbackFor = NoSuchElementException.class)
     public Boolean createImage(ImageCreateDto imageCreateDto) {
         Image image = new Image();
         image.setData(imageCreateDto.getData());
+        Optional<Place> placeFromDB = placeRepository.findById(imageCreateDto.getPlace_id());
+        Optional<Event> eventFromDB = eventRepository.findById(imageCreateDto.getEvent_id());
+        if (!(placeFromDB.isPresent() || eventFromDB.isPresent())) {
+            throw new NoSuchElementException("There is not at least one existing Place and Event.");
+        }
+        image.setPlace(placeFromDB.get());
+        image.setEvent(eventFromDB.get());
         Image newImage = imageRepository.save(image);
         return getImageById(newImage.getId()).isPresent();
     }

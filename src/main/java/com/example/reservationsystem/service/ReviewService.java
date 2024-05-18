@@ -1,21 +1,35 @@
 package com.example.reservationsystem.service;
 
+import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Review;
+import com.example.reservationsystem.model.User;
 import com.example.reservationsystem.model.dto.ReviewCreateDto;
+import com.example.reservationsystem.repository.EventRepository;
 import com.example.reservationsystem.repository.ReviewRepository;
+import com.example.reservationsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
 
+    private final EventRepository eventRepository;
+
+    private final UserRepository userRepository;
+
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository) {
+    public ReviewService(ReviewRepository reviewRepository, EventRepository eventRepository, UserRepository userRepository) {
         this.reviewRepository = reviewRepository;
+        this.eventRepository = eventRepository;
+        this.userRepository = userRepository;
     }
 
     public Optional<List<Review>> getAllReviews() {
@@ -26,13 +40,22 @@ public class ReviewService {
         return reviewRepository.findById(id);
     }
 
+    @Transactional(rollbackFor = NoSuchElementException.class)
     public Boolean createReview(ReviewCreateDto reviewCreateDto) {
         Review review = new Review();
-        review.setDate(reviewCreateDto.getDate());
+        review.setDate(Timestamp.valueOf(LocalDateTime.now()));
         review.setComment(reviewCreateDto.getComment());
         review.setRating(reviewCreateDto.getRating());
-        Review newReview = reviewRepository.save(review);
-        return getReviewById(newReview.getId()).isPresent();
+        Optional<Event> eventFromDB = eventRepository.findById(reviewCreateDto.getEvent_id());
+        Optional<User> userFromDB = userRepository.findById(reviewCreateDto.getUser_id());
+        if (eventFromDB.isPresent() && userFromDB.isPresent()) {
+            review.setUser(userFromDB.get());
+            review.setEvent(eventFromDB.get());
+            Review newReview = reviewRepository.save(review);
+            return getReviewById(newReview.getId()).isPresent();
+        } else {
+            throw new NoSuchElementException("Event or user not found.");
+        }
     }
 
     public Boolean deleteReviewById(Long id) {
