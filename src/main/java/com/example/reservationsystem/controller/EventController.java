@@ -74,4 +74,18 @@ public class EventController {
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
+
+    @GetMapping("/sort/{field}")
+    public ResponseEntity<List<Event>> getAllEventsAndSortByField(@PathVariable("field") String field) {
+        Optional<List<Event>> result = eventService.getAllEventsAndSortByField(field);
+        return result.map(events -> new ResponseEntity<>(events, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/sort/{field}/{page}")
+    public ResponseEntity<List<Event>> getAllEventsAndSortByField(@PathVariable("field") Integer field, @PathVariable("page") Integer page) {
+        Optional<List<Event>> result = eventService.getEventsWithPagination(field, page);
+        return result.map(events -> new ResponseEntity<>(events, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

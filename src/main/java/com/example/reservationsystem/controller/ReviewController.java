@@ -73,4 +73,18 @@ public class ReviewController {
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
+
+    @GetMapping("/sort/{field}")
+    public ResponseEntity<List<Review>> getAllReviewsAndSortByField(@PathVariable("field") String field) {
+        Optional<List<Review>> result = reviewService.getAllReviewsAndSortByField(field);
+        return result.map(reviews -> new ResponseEntity<>(reviews, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/sort/{field}/{page}")
+    public ResponseEntity<List<Review>> getAllReviewsAndSortByField(@PathVariable("field") Integer field, @PathVariable("page") Integer page) {
+        Optional<List<Review>> result = reviewService.getReviewsWithPagination(field, page);
+        return result.map(reviews -> new ResponseEntity<>(reviews, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

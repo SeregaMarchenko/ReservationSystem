@@ -10,7 +10,6 @@ import com.example.reservationsystem.repository.ImageRepository;
 import com.example.reservationsystem.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -39,7 +38,6 @@ public class ImageService {
         return imageRepository.findById(id);
     }
 
-    @Transactional(rollbackFor = NoSuchElementException.class)
     public Boolean createImage(ImageCreateDto imageCreateDto, MultipartFile file) {
         Image image = new Image();
         if (!file.isEmpty()) {

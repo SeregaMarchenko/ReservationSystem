@@ -6,8 +6,9 @@ import com.example.reservationsystem.model.dto.EventCreateDto;
 import com.example.reservationsystem.repository.EventRepository;
 import com.example.reservationsystem.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -33,7 +34,6 @@ public class EventService {
         return eventRepository.findById(id);
     }
 
-    @Transactional(rollbackFor = NoSuchElementException.class)
     public Boolean createEvent(EventCreateDto eventCreateDto) {
         Event event = new Event();
         event.setDescription(eventCreateDto.getDescription());
@@ -78,5 +78,13 @@ public class EventService {
             return updateEvent.equals(eventFromDB);
         }
         return false;
+    }
+
+    public Optional<List<Event>> getAllEventsAndSortByField(String field) {
+        return Optional.of(eventRepository.findAll(Sort.by(field)));
+    }
+
+    public Optional<List<Event>> getEventsWithPagination(int size, int page) {
+        return Optional.of(eventRepository.findAll(PageRequest.ofSize(size).withPage(page)).getContent());
     }
 }

@@ -4,6 +4,8 @@ import com.example.reservationsystem.model.Place;
 import com.example.reservationsystem.model.dto.PlaceCreateDto;
 import com.example.reservationsystem.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,5 +57,13 @@ public class PlaceService {
             return updatePlace.equals(placeFromDB);
         }
         return false;
+    }
+
+    public Optional<List<Place>> getAllPlacesAndSortByField(String field) {
+        return Optional.of(placeRepository.findAll(Sort.by(field)));
+    }
+
+    public Optional<List<Place>> getPlacesWithPagination(int size, int page) {
+        return Optional.of(placeRepository.findAll(PageRequest.ofSize(size).withPage(page)).getContent());
     }
 }

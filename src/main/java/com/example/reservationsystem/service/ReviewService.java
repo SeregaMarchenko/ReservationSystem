@@ -8,8 +8,9 @@ import com.example.reservationsystem.repository.EventRepository;
 import com.example.reservationsystem.repository.ReviewRepository;
 import com.example.reservationsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -40,7 +41,6 @@ public class ReviewService {
         return reviewRepository.findById(id);
     }
 
-    @Transactional(rollbackFor = NoSuchElementException.class)
     public Boolean createReview(ReviewCreateDto reviewCreateDto) {
         Review review = new Review();
         review.setDate(Timestamp.valueOf(LocalDateTime.now()));
@@ -80,5 +80,13 @@ public class ReviewService {
             return updateReview.equals(reviewFromDB);
         }
         return false;
+    }
+
+    public Optional<List<Review>> getAllReviewsAndSortByField(String field) {
+        return Optional.of(reviewRepository.findAll(Sort.by(field)));
+    }
+
+    public Optional<List<Review>> getReviewsWithPagination(int size, int page) {
+        return Optional.of(reviewRepository.findAll(PageRequest.ofSize(size).withPage(page)).getContent());
     }
 }

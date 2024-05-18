@@ -73,4 +73,18 @@ public class PlaceController {
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
+
+    @GetMapping("/sort/{field}")
+    public ResponseEntity<List<Place>> getAllPlacesAndSortByField(@PathVariable("field") String field) {
+        Optional<List<Place>> result = placeService.getAllPlacesAndSortByField(field);
+        return result.map(places -> new ResponseEntity<>(places, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/sort/{field}/{page}")
+    public ResponseEntity<List<Place>> getAllPlacesAndSortByField(@PathVariable("field") Integer field, @PathVariable("page") Integer page) {
+        Optional<List<Place>> result = placeService.getPlacesWithPagination(field, page);
+        return result.map(places -> new ResponseEntity<>(places, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }
