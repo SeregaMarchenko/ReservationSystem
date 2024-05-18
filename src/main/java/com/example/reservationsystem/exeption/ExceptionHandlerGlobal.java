@@ -34,4 +34,16 @@ public class ExceptionHandlerGlobal {
         log.error("update exception: " + exception);
         return new ResponseEntity<>(HttpStatusCode.valueOf(400));
     }
+
+    @ExceptionHandler(value = EmptyFileException.class)
+    public ResponseEntity<HttpStatusCode> emptyFileExceptionHandler(Exception exception) {
+        log.error("file exception: " + exception);
+        return new ResponseEntity<>(HttpStatusCode.valueOf(400));
+    }
+
+    @ExceptionHandler(value = RuntimeException.class)
+    public ResponseEntity<HttpStatusCode> runtimeExceptionHandler(Exception exception) {
+        log.error("runtime exception: " + exception);
+        return new ResponseEntity<>(HttpStatusCode.valueOf(400));
+    }
 }

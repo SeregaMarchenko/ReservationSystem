@@ -1,5 +1,6 @@
 package com.example.reservationsystem.service;
 
+import com.example.reservationsystem.exeption.EmptyFileException;
 import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Image;
 import com.example.reservationsystem.model.Place;
@@ -10,7 +11,9 @@ import com.example.reservationsystem.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -37,9 +40,17 @@ public class ImageService {
     }
 
     @Transactional(rollbackFor = NoSuchElementException.class)
-    public Boolean createImage(ImageCreateDto imageCreateDto) {
+    public Boolean createImage(ImageCreateDto imageCreateDto, MultipartFile file) {
         Image image = new Image();
-        image.setData(imageCreateDto.getData());
+        if (!file.isEmpty()) {
+            try {
+                image.setData(file.getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            throw new EmptyFileException("Image file is empty");
+        }
         Optional<Place> placeFromDB = placeRepository.findById(imageCreateDto.getPlace_id());
         Optional<Event> eventFromDB = eventRepository.findById(imageCreateDto.getEvent_id());
         if (!(placeFromDB.isPresent() || eventFromDB.isPresent())) {

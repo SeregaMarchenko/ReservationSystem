@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,11 +50,13 @@ public class ImageController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createImage(@RequestBody @Valid ImageCreateDto image, BindingResult bindingResult) {
+    public ResponseEntity<HttpStatus> createImage(@RequestBody @Valid ImageCreateDto image,
+                                                  BindingResult bindingResult,
+                                                  @RequestParam("file") MultipartFile file) {
         if (bindingResult.hasErrors()) {
             throw new CustomValidException(bindingResult.getAllErrors().toString());
         }
-        if (imageService.createImage(image)) {
+        if (imageService.createImage(image, file)) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
