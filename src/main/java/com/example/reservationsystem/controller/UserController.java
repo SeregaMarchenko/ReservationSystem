@@ -3,6 +3,9 @@ package com.example.reservationsystem.controller;
 import com.example.reservationsystem.exeption.CustomValidException;
 import com.example.reservationsystem.model.User;
 import com.example.reservationsystem.model.dto.create.UserCreateDto;
+import com.example.reservationsystem.model.dto.update.user.UserUpdateAgeDto;
+import com.example.reservationsystem.model.dto.update.user.UserUpdateFirstnameDto;
+import com.example.reservationsystem.model.dto.update.user.UserUpdateLastnameDto;
 import com.example.reservationsystem.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +64,30 @@ public class UserController {
     @PutMapping
     public ResponseEntity<HttpStatus> updateUser(@RequestBody User user) {
         if (userService.updateUser(user)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/firstname")
+    public ResponseEntity<HttpStatus> updateUserFirstname(@RequestBody @Valid UserUpdateFirstnameDto user) {
+        if (userService.updateUserFirstname(user)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/lastname")
+    public ResponseEntity<HttpStatus> updateUserLastname(@RequestBody @Valid UserUpdateLastnameDto user) {
+        if (userService.updateUserLastname(user)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/age")
+    public ResponseEntity<HttpStatus> updateUserAge(@RequestBody @Valid UserUpdateAgeDto user) {
+        if (userService.updateUserAge(user)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
