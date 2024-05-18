@@ -5,7 +5,7 @@ import com.example.reservationsystem.exeption.UpdateException;
 import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Reservation;
 import com.example.reservationsystem.model.User;
-import com.example.reservationsystem.model.dto.ReservationCreateDto;
+import com.example.reservationsystem.model.dto.create.ReservationCreateDto;
 import com.example.reservationsystem.repository.EventRepository;
 import com.example.reservationsystem.repository.ReservationRepository;
 import com.example.reservationsystem.repository.UserRepository;

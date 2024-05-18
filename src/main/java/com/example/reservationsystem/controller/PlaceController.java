@@ -2,7 +2,7 @@ package com.example.reservationsystem.controller;
 
 import com.example.reservationsystem.exeption.CustomValidException;
 import com.example.reservationsystem.model.Place;
-import com.example.reservationsystem.model.dto.PlaceCreateDto;
+import com.example.reservationsystem.model.dto.create.PlaceCreateDto;
 import com.example.reservationsystem.service.PlaceService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

@@ -2,7 +2,13 @@ package com.example.reservationsystem.controller;
 
 import com.example.reservationsystem.exeption.CustomValidException;
 import com.example.reservationsystem.model.Event;
-import com.example.reservationsystem.model.dto.EventCreateDto;
+import com.example.reservationsystem.model.dto.create.EventCreateDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateCapacityDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateDescriptionDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateLocationDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateNameDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdatePlaceIdDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateReservationDateDto;
 import com.example.reservationsystem.service.EventService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +68,54 @@ public class EventController {
     @PutMapping
     public ResponseEntity<HttpStatus> updateEvent(@RequestBody Event event) {
         if (eventService.updateEvent(event)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/name")
+    public ResponseEntity<HttpStatus> updateEventName(@RequestBody @Valid EventUpdateNameDto event) {
+        if (eventService.updateEventName(event)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/description")
+    public ResponseEntity<HttpStatus> updateEventDescription(@RequestBody @Valid EventUpdateDescriptionDto event) {
+        if (eventService.updateEventDescription(event)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/location")
+    public ResponseEntity<HttpStatus> updateEventLocation(@RequestBody @Valid EventUpdateLocationDto event) {
+        if (eventService.updateEventLocation(event)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/capacity")
+    public ResponseEntity<HttpStatus> updateEventCapacity(@RequestBody @Valid EventUpdateCapacityDto event) {
+        if (eventService.updateEventCapacity(event)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/placeId")
+    public ResponseEntity<HttpStatus> updateEventPlaceId(@RequestBody @Valid EventUpdatePlaceIdDto event) {
+        if (eventService.updateEventPlaceId(event)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/reservationDate")
+    public ResponseEntity<HttpStatus> updateEventReservationDate(@RequestBody @Valid EventUpdateReservationDateDto event) {
+        if (eventService.updateEventReservationDate(event)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);

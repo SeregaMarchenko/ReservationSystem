@@ -4,7 +4,7 @@ import com.example.reservationsystem.exeption.EmptyFileException;
 import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Image;
 import com.example.reservationsystem.model.Place;
-import com.example.reservationsystem.model.dto.ImageCreateDto;
+import com.example.reservationsystem.model.dto.create.ImageCreateDto;
 import com.example.reservationsystem.repository.EventRepository;
 import com.example.reservationsystem.repository.ImageRepository;
 import com.example.reservationsystem.repository.PlaceRepository;

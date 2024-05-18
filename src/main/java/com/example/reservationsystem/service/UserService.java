@@ -1,7 +1,7 @@
 package com.example.reservationsystem.service;
 
 import com.example.reservationsystem.model.User;
-import com.example.reservationsystem.model.dto.UserCreateDto;
+import com.example.reservationsystem.model.dto.create.UserCreateDto;
 import com.example.reservationsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

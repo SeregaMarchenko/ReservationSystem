@@ -1,4 +1,4 @@
-package com.example.reservationsystem.model.dto;
+package com.example.reservationsystem.model.dto.create;
 
 import com.example.reservationsystem.annotation.Rating;
 import jakarta.validation.constraints.NotNull;

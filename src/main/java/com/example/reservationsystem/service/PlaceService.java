@@ -1,7 +1,7 @@
 package com.example.reservationsystem.service;
 
 import com.example.reservationsystem.model.Place;
-import com.example.reservationsystem.model.dto.PlaceCreateDto;
+import com.example.reservationsystem.model.dto.create.PlaceCreateDto;
 import com.example.reservationsystem.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;

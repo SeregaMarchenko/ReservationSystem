@@ -2,7 +2,7 @@ package com.example.reservationsystem.controller;
 
 import com.example.reservationsystem.exeption.CustomValidException;
 import com.example.reservationsystem.model.Image;
-import com.example.reservationsystem.model.dto.ImageCreateDto;
+import com.example.reservationsystem.model.dto.create.ImageCreateDto;
 import com.example.reservationsystem.service.ImageService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

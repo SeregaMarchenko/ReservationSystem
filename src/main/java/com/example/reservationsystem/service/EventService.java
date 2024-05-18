@@ -1,8 +1,15 @@
 package com.example.reservationsystem.service;
 
+import com.example.reservationsystem.exeption.IncorrectCapacityException;
 import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Place;
-import com.example.reservationsystem.model.dto.EventCreateDto;
+import com.example.reservationsystem.model.dto.create.EventCreateDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateCapacityDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateDescriptionDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateLocationDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateNameDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdatePlaceIdDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateReservationDateDto;
 import com.example.reservationsystem.repository.EventRepository;
 import com.example.reservationsystem.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +86,90 @@ public class EventService {
         }
         return false;
     }
+
+    public Boolean updateEventName(EventUpdateNameDto event) {
+        Optional<Event> eventFromDBOptional = eventRepository.findById(event.getId());
+        if (eventFromDBOptional.isPresent()) {
+            Event eventFromDB = eventFromDBOptional.get();
+            if (event.getName() != null) {
+                eventFromDB.setName(event.getName());
+            }
+            Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
+            return updateEvent.equals(eventFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updateEventDescription(EventUpdateDescriptionDto event) {
+        Optional<Event> eventFromDBOptional = eventRepository.findById(event.getId());
+        if (eventFromDBOptional.isPresent()) {
+            Event eventFromDB = eventFromDBOptional.get();
+            if (event.getDescription() != null) {
+                eventFromDB.setDescription(event.getDescription());
+            }
+            Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
+            return updateEvent.equals(eventFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updateEventLocation(EventUpdateLocationDto event) {
+        Optional<Event> eventFromDBOptional = eventRepository.findById(event.getId());
+        if (eventFromDBOptional.isPresent()) {
+            Event eventFromDB = eventFromDBOptional.get();
+            if (event.getLocation() != null) {
+                eventFromDB.setLocation(event.getLocation());
+            }
+            Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
+            return updateEvent.equals(eventFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updateEventCapacity(EventUpdateCapacityDto event) {
+        Optional<Event> eventFromDBOptional = eventRepository.findById(event.getId());
+        if (eventFromDBOptional.isPresent()) {
+            Event eventFromDB = eventFromDBOptional.get();
+            if (event.getCapacity() >= eventFromDB.getCapacity()) {
+                eventFromDB.setCapacity(event.getCapacity());
+            }else {
+                throw new IncorrectCapacityException("The number of reserves seats is more than the total number of seats indicated");
+            }
+            Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
+            return updateEvent.equals(eventFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updateEventPlaceId(EventUpdatePlaceIdDto event) {
+        Optional<Event> eventFromDBOptional = eventRepository.findById(event.getId());
+        if (eventFromDBOptional.isPresent()) {
+            Event eventFromDB = eventFromDBOptional.get();
+            Optional<Place> placeFromDB = placeRepository.findById(event.getPlace_id());
+            if (placeFromDB.isPresent()) {
+                eventFromDB.setPlace(placeFromDB.get());
+            } else {
+                throw new NoSuchElementException("Place not found.");
+            }
+            Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
+            return updateEvent.equals(eventFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updateEventReservationDate(EventUpdateReservationDateDto event) {
+        Optional<Event> eventFromDBOptional = eventRepository.findById(event.getId());
+        if (eventFromDBOptional.isPresent()) {
+            Event eventFromDB = eventFromDBOptional.get();
+            if (event.getReservationDate() != null) {
+                eventFromDB.setReservationDate(event.getReservationDate());
+            }
+            Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
+            return updateEvent.equals(eventFromDB);
+        }
+        return false;
+    }
+
 
     public Optional<List<Event>> getAllEventsAndSortByField(String field) {
         return Optional.of(eventRepository.findAll(Sort.by(field)));

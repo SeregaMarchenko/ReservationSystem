@@ -3,7 +3,7 @@ package com.example.reservationsystem.service;
 import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Review;
 import com.example.reservationsystem.model.User;
-import com.example.reservationsystem.model.dto.ReviewCreateDto;
+import com.example.reservationsystem.model.dto.create.ReviewCreateDto;
 import com.example.reservationsystem.repository.EventRepository;
 import com.example.reservationsystem.repository.ReviewRepository;
 import com.example.reservationsystem.repository.UserRepository;

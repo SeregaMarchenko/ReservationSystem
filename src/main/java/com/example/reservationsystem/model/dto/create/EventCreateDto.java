@@ -1,4 +1,4 @@
-package com.example.reservationsystem.model.dto;
+package com.example.reservationsystem.model.dto.create;
 
 import com.example.reservationsystem.annotation.FutureTimestamp;
 import com.fasterxml.jackson.annotation.JsonFormat;
