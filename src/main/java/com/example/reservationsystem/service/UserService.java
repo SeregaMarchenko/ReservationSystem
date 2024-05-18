@@ -5,6 +5,7 @@ import com.example.reservationsystem.model.dto.create.UserCreateDto;
 import com.example.reservationsystem.model.dto.update.user.UserUpdateAgeDto;
 import com.example.reservationsystem.model.dto.update.user.UserUpdateFirstnameDto;
 import com.example.reservationsystem.model.dto.update.user.UserUpdateLastnameDto;
+import com.example.reservationsystem.repository.ImageRepository;
 import com.example.reservationsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ImageRepository imageRepository) {
         this.userRepository = userRepository;
     }
 

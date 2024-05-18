@@ -3,6 +3,8 @@ package com.example.reservationsystem.controller;
 import com.example.reservationsystem.exeption.CustomValidException;
 import com.example.reservationsystem.model.Image;
 import com.example.reservationsystem.model.dto.create.ImageCreateDto;
+import com.example.reservationsystem.model.dto.update.image.ImageUpdateEventIdDto;
+import com.example.reservationsystem.model.dto.update.image.ImageUpdatePlaceIdDto;
 import com.example.reservationsystem.service.ImageService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +67,30 @@ public class ImageController {
     @PutMapping
     public ResponseEntity<HttpStatus> updateImage(@RequestBody Image image) {
         if (imageService.updateImage(image)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/event_id")
+    public ResponseEntity<HttpStatus> updateImageEventId(@RequestBody @Valid ImageUpdateEventIdDto image) {
+        if (imageService.updateImageEventId(image)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/place_id")
+    public ResponseEntity<HttpStatus> updateImagePlaceId(@RequestBody @Valid ImageUpdatePlaceIdDto image) {
+        if (imageService.updateImagePlaceId(image)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/bites")
+    public ResponseEntity<HttpStatus> updateImageBites(@RequestParam Long id, MultipartFile file) {
+        if (imageService.updateImageBytes(id, file)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
