@@ -105,7 +105,7 @@ public class EventController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @PutMapping("/placeId")
+    @PutMapping("/place_id")
     public ResponseEntity<HttpStatus> updateEventPlaceId(@RequestBody @Valid EventUpdatePlaceIdDto event) {
         if (eventService.updateEventPlaceId(event)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -113,7 +113,7 @@ public class EventController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @PutMapping("/reservationDate")
+    @PutMapping("/reservation_date")
     public ResponseEntity<HttpStatus> updateEventReservationDate(@RequestBody @Valid EventUpdateReservationDateDto event) {
         if (eventService.updateEventReservationDate(event)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

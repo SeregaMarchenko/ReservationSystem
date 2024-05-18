@@ -1,4 +1,4 @@
-package com.example.reservationsystem.model.dto.update.place;
+package com.example.reservationsystem.model.dto.update.review;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class PlaceUpdateDescriptionDto {
+public class ReviewUpdateCommentDto {
     @NotNull
     private Long id;
 
     @NotNull
     @Size(max = 200)
-    private String description;
+    private String comment;
 }

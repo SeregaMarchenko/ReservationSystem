@@ -27,6 +27,7 @@ public class EventCreateDto {
     @Size(min = 1, max = 30)
     private String location;
 
+    @Size(max = 200)
     private String description;
 
     @NotNull

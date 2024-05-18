@@ -3,7 +3,6 @@ package com.example.reservationsystem.controller;
 import com.example.reservationsystem.exeption.CustomValidException;
 import com.example.reservationsystem.model.Place;
 import com.example.reservationsystem.model.dto.create.PlaceCreateDto;
-import com.example.reservationsystem.model.dto.update.event.EventUpdateNameDto;
 import com.example.reservationsystem.model.dto.update.place.PlaceUpdateDescriptionDto;
 import com.example.reservationsystem.model.dto.update.place.PlaceUpdateLocationDto;
 import com.example.reservationsystem.model.dto.update.place.PlaceUpdateNameDto;

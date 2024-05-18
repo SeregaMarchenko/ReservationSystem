@@ -3,6 +3,9 @@ package com.example.reservationsystem.controller;
 import com.example.reservationsystem.exeption.CustomValidException;
 import com.example.reservationsystem.model.Review;
 import com.example.reservationsystem.model.dto.create.ReviewCreateDto;
+import com.example.reservationsystem.model.dto.update.review.ReviewUpdateCommentDto;
+import com.example.reservationsystem.model.dto.update.review.ReviewUpdateEventIdDto;
+import com.example.reservationsystem.model.dto.update.review.ReviewUpdateUserIdDto;
 import com.example.reservationsystem.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +64,30 @@ public class ReviewController {
     @PutMapping
     public ResponseEntity<HttpStatus> updateReview(@RequestBody Review review) {
         if (reviewService.updateReview(review)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/comment")
+    public ResponseEntity<HttpStatus> updateReviewComment(@RequestBody @Valid ReviewUpdateCommentDto review) {
+        if (reviewService.updateReviewComment(review)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/user_id")
+    public ResponseEntity<HttpStatus> updateReviewUserId(@RequestBody @Valid ReviewUpdateUserIdDto review) {
+        if (reviewService.updateReviewUserId(review)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/event_id")
+    public ResponseEntity<HttpStatus> updateReviewEventId(@RequestBody @Valid ReviewUpdateEventIdDto review) {
+        if (reviewService.updateReviewEventId(review)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);

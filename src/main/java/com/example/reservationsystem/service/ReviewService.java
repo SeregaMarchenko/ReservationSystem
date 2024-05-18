@@ -4,6 +4,9 @@ import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Review;
 import com.example.reservationsystem.model.User;
 import com.example.reservationsystem.model.dto.create.ReviewCreateDto;
+import com.example.reservationsystem.model.dto.update.review.ReviewUpdateCommentDto;
+import com.example.reservationsystem.model.dto.update.review.ReviewUpdateEventIdDto;
+import com.example.reservationsystem.model.dto.update.review.ReviewUpdateUserIdDto;
 import com.example.reservationsystem.repository.EventRepository;
 import com.example.reservationsystem.repository.ReviewRepository;
 import com.example.reservationsystem.repository.UserRepository;
@@ -76,6 +79,49 @@ public class ReviewService {
             reviewFromDB.setEvent(review.getEvent());
             reviewFromDB.setUser(review.getUser());
             reviewFromDB.setComment(review.getComment());
+            Review updateReview = reviewRepository.saveAndFlush(reviewFromDB);
+            return updateReview.equals(reviewFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updateReviewComment(ReviewUpdateCommentDto review) {
+        Optional<Review> reviewFromDBOptional = reviewRepository.findById(review.getId());
+        if (reviewFromDBOptional.isPresent()) {
+            Review reviewFromDB = reviewFromDBOptional.get();
+            reviewFromDB.setComment(review.getComment());
+            Review updateReview = reviewRepository.saveAndFlush(reviewFromDB);
+            return updateReview.equals(reviewFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updateReviewUserId(ReviewUpdateUserIdDto review) {
+        Optional<Review> reviewFromDBOptional = reviewRepository.findById(review.getId());
+        if (reviewFromDBOptional.isPresent()) {
+            Review reviewFromDB = reviewFromDBOptional.get();
+            Optional<User> userFromDB = userRepository.findById(review.getUser_id());
+            if (userFromDB.isPresent()) {
+                reviewFromDB.setUser(userFromDB.get());
+            } else {
+                throw new NoSuchElementException("User not found.");
+            }
+            Review updateReview = reviewRepository.saveAndFlush(reviewFromDB);
+            return updateReview.equals(reviewFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updateReviewEventId(ReviewUpdateEventIdDto review) {
+        Optional<Review> reviewFromDBOptional = reviewRepository.findById(review.getId());
+        if (reviewFromDBOptional.isPresent()) {
+            Review reviewFromDB = reviewFromDBOptional.get();
+            Optional<Event> eventFromDB = eventRepository.findById(review.getEvent_id());
+            if (eventFromDB.isPresent()) {
+                reviewFromDB.setEvent(eventFromDB.get());
+            } else {
+                throw new NoSuchElementException("Event not found.");
+            }
             Review updateReview = reviewRepository.saveAndFlush(reviewFromDB);
             return updateReview.equals(reviewFromDB);
         }

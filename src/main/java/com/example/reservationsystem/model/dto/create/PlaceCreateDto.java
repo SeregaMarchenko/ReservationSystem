@@ -16,5 +16,6 @@ public class PlaceCreateDto {
     @Size(min = 10, max = 30)
     private String location;
 
+    @Size(max = 200)
     private String description;
 }
