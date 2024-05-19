@@ -1,9 +1,7 @@
 package com.example.reservationsystem.service;
 
-import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Place;
 import com.example.reservationsystem.model.dto.create.PlaceCreateDto;
-import com.example.reservationsystem.model.dto.update.event.EventUpdateNameDto;
 import com.example.reservationsystem.model.dto.update.place.PlaceUpdateDescriptionDto;
 import com.example.reservationsystem.model.dto.update.place.PlaceUpdateLocationDto;
 import com.example.reservationsystem.model.dto.update.place.PlaceUpdateNameDto;
@@ -13,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +38,8 @@ public class PlaceService {
         place.setDescription(placeFromDto.getDescription());
         place.setLocation(placeFromDto.getLocation());
         place.setName(placeFromDto.getName());
+        place.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+        place.setChanged(Timestamp.valueOf(LocalDateTime.now()));
         Place newPlace = placeRepository.save(place);
         return getPlaceById(newPlace.getId()).isPresent();
     }
@@ -58,6 +60,7 @@ public class PlaceService {
                 placeFromDB.setName(place.getName());
             }
             placeFromDB.setDescription(place.getDescription());
+            placeFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Place updatePlace = placeRepository.saveAndFlush(placeFromDB);
             return updatePlace.equals(placeFromDB);
         }
@@ -69,6 +72,7 @@ public class PlaceService {
         if (placeFromDBOptional.isPresent()) {
             Place placeFromDB = placeFromDBOptional.get();
             placeFromDB.setName(place.getName());
+            placeFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Place updatePlace = placeRepository.saveAndFlush(placeFromDB);
             return updatePlace.equals(placeFromDB);
         }
@@ -80,6 +84,7 @@ public class PlaceService {
         if (placeFromDBOptional.isPresent()) {
             Place placeFromDB = placeFromDBOptional.get();
             placeFromDB.setDescription(place.getDescription());
+            placeFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Place updatePlace = placeRepository.saveAndFlush(placeFromDB);
             return updatePlace.equals(placeFromDB);
         }
@@ -91,6 +96,7 @@ public class PlaceService {
         if (placeFromDBOptional.isPresent()) {
             Place placeFromDB = placeFromDBOptional.get();
             placeFromDB.setName(place.getLocation());
+            placeFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Place updatePlace = placeRepository.saveAndFlush(placeFromDB);
             return updatePlace.equals(placeFromDB);
         }

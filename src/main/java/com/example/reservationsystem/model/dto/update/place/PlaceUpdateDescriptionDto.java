@@ -11,7 +11,7 @@ public class PlaceUpdateDescriptionDto {
     @NotNull
     private Long id;
 
-    @NotNull
     @Size(max = 200)
     private String description;
 }
+//TODO Status, when user update change chTimetamp, add fiela createTi and changeTi

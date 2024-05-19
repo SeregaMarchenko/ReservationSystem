@@ -17,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -51,6 +53,8 @@ public class EventService {
         Optional<Place> placeFromDB = placeRepository.findById(eventCreateDto.getPlace_id());
         if (placeFromDB.isPresent()) {
             event.setPlace(placeFromDB.get());
+            event.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+            event.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Event newEvent = eventRepository.save(event);
             return getEventById(newEvent.getId()).isPresent();
         } else {
@@ -81,6 +85,7 @@ public class EventService {
             }
             eventFromDB.setDescription(event.getDescription());
             eventFromDB.setPlace(event.getPlace());
+            eventFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
         }
@@ -92,6 +97,7 @@ public class EventService {
         if (eventFromDBOptional.isPresent()) {
             Event eventFromDB = eventFromDBOptional.get();
             eventFromDB.setName(event.getName());
+            eventFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
         }
@@ -103,6 +109,7 @@ public class EventService {
         if (eventFromDBOptional.isPresent()) {
             Event eventFromDB = eventFromDBOptional.get();
             eventFromDB.setDescription(event.getDescription());
+            eventFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
         }
@@ -114,6 +121,7 @@ public class EventService {
         if (eventFromDBOptional.isPresent()) {
             Event eventFromDB = eventFromDBOptional.get();
             eventFromDB.setLocation(event.getLocation());
+            eventFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
         }
@@ -129,6 +137,7 @@ public class EventService {
             } else {
                 throw new IncorrectCapacityException("The number of reserves seats is more than the total number of seats indicated");
             }
+            eventFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
         }
@@ -145,6 +154,7 @@ public class EventService {
             } else {
                 throw new NoSuchElementException("Place not found.");
             }
+            eventFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
         }
@@ -156,6 +166,7 @@ public class EventService {
         if (eventFromDBOptional.isPresent()) {
             Event eventFromDB = eventFromDBOptional.get();
             eventFromDB.setReservationDate(event.getReservationDate());
+            eventFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
         }

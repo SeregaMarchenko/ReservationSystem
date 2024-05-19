@@ -50,4 +50,11 @@ public class Event {
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
 
+    @Column(name = "created", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp created;
+
+    @Column(name = "changed", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp changed;
 }

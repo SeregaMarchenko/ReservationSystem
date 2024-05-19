@@ -46,4 +46,12 @@ public class Review {
     @Column(name = "date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp date;
+
+    @Column(name = "created", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp created;
+
+    @Column(name = "changed", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp changed;
 }

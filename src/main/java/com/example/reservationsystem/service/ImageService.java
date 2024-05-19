@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -58,6 +60,8 @@ public class ImageService {
         }
         image.setPlace(placeFromDB.get());
         image.setEvent(eventFromDB.get());
+        image.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+        image.setChanged(Timestamp.valueOf(LocalDateTime.now()));
         Image newImage = imageRepository.save(image);
         return getImageById(newImage.getId()).isPresent();
     }
@@ -76,6 +80,7 @@ public class ImageService {
             }
             imageFromDB.setEvent(image.getEvent());
             imageFromDB.setPlace(image.getPlace());
+            imageFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Image updateImage = imageRepository.saveAndFlush(imageFromDB);
             return updateImage.equals(imageFromDB);
         }
@@ -95,6 +100,7 @@ public class ImageService {
             } else {
                 throw new EmptyFileException("Image file is empty");
             }
+            imageFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Image updateImage = imageRepository.saveAndFlush(imageFromDB);
             return updateImage.equals(imageFromDB);
         }
@@ -111,6 +117,7 @@ public class ImageService {
             } else {
                 throw new NoSuchElementException("Event not found.");
             }
+            imageFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Image updateImage = imageRepository.saveAndFlush(imageFromDB);
             return updateImage.equals(imageFromDB);
         }
@@ -127,6 +134,7 @@ public class ImageService {
             } else {
                 throw new NoSuchElementException("Place not found.");
             }
+            imageFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Image updateImage = imageRepository.saveAndFlush(imageFromDB);
             return updateImage.equals(imageFromDB);
         }

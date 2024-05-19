@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -60,6 +62,8 @@ public class ReservationService {
             reservation.setStatus(true);
             reservation.setUser(userFromDB.get());
             reservation.setEvent(event);
+            reservation.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+            reservation.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Reservation newReservation = reservationRepository.save(reservation);
             return getReservationById(newReservation.getId()).isPresent();
         } else {
@@ -81,6 +85,7 @@ public class ReservationService {
             }
             reservationFromDB.setEvent(reservation.getEvent());
             reservationFromDB.setUser(reservation.getUser());
+            reservationFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Reservation updateReservation = reservationRepository.saveAndFlush(reservationFromDB);
             return updateReservation.equals(reservationFromDB);
         }
@@ -97,6 +102,7 @@ public class ReservationService {
             } else {
                 throw new NoSuchElementException("User not found.");
             }
+            reservationFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Reservation updateReservation = reservationRepository.saveAndFlush(reservationFromDB);
             return updateReservation.equals(reservationFromDB);
         }
@@ -113,6 +119,7 @@ public class ReservationService {
             } else {
                 throw new NoSuchElementException("Event not found.");
             }
+            reservationFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Reservation updateReservation = reservationRepository.saveAndFlush(reservationFromDB);
             return updateReservation.equals(reservationFromDB);
         }

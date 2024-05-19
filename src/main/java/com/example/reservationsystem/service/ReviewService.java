@@ -54,6 +54,8 @@ public class ReviewService {
         if (eventFromDB.isPresent() && userFromDB.isPresent()) {
             review.setUser(userFromDB.get());
             review.setEvent(eventFromDB.get());
+            review.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+            review.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Review newReview = reviewRepository.save(review);
             return getReviewById(newReview.getId()).isPresent();
         } else {
@@ -79,6 +81,7 @@ public class ReviewService {
             reviewFromDB.setEvent(review.getEvent());
             reviewFromDB.setUser(review.getUser());
             reviewFromDB.setComment(review.getComment());
+            reviewFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Review updateReview = reviewRepository.saveAndFlush(reviewFromDB);
             return updateReview.equals(reviewFromDB);
         }
@@ -90,6 +93,7 @@ public class ReviewService {
         if (reviewFromDBOptional.isPresent()) {
             Review reviewFromDB = reviewFromDBOptional.get();
             reviewFromDB.setComment(review.getComment());
+            reviewFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Review updateReview = reviewRepository.saveAndFlush(reviewFromDB);
             return updateReview.equals(reviewFromDB);
         }
@@ -106,6 +110,7 @@ public class ReviewService {
             } else {
                 throw new NoSuchElementException("User not found.");
             }
+            reviewFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Review updateReview = reviewRepository.saveAndFlush(reviewFromDB);
             return updateReview.equals(reviewFromDB);
         }
@@ -122,6 +127,7 @@ public class ReviewService {
             } else {
                 throw new NoSuchElementException("Event not found.");
             }
+            reviewFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Review updateReview = reviewRepository.saveAndFlush(reviewFromDB);
             return updateReview.equals(reviewFromDB);
         }

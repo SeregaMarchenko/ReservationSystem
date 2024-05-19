@@ -73,6 +73,7 @@ public class UserService {
         if (userFromDBOptional.isPresent()) {
             User userFromDB = userFromDBOptional.get();
             userFromDB.setFirstname(user.getFirstname());
+            userFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             User updateUser = userRepository.saveAndFlush(userFromDB);
             return updateUser.equals(userFromDB);
         }
@@ -84,6 +85,7 @@ public class UserService {
         if (userFromDBOptional.isPresent()) {
             User userFromDB = userFromDBOptional.get();
             userFromDB.setLastname(user.getLastname());
+            userFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             User updateUser = userRepository.saveAndFlush(userFromDB);
             return updateUser.equals(userFromDB);
         }
@@ -95,6 +97,7 @@ public class UserService {
         if (userFromDBOptional.isPresent()) {
             User userFromDB = userFromDBOptional.get();
             userFromDB.setAge(user.getAge());
+            userFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             User updateUser = userRepository.saveAndFlush(userFromDB);
             return updateUser.equals(userFromDB);
         }

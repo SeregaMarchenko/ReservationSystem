@@ -11,7 +11,6 @@ public class EventUpdateDescriptionDto {
     @NotNull
     private Long id;
 
-    @NotNull
     @Size(max = 200)
     private String description;
 }
