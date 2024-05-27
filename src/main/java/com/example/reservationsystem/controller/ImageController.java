@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,13 +52,9 @@ public class ImageController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
-    public ResponseEntity<HttpStatus> createImage(@RequestBody @Valid ImageCreateDto image,
-                                                  BindingResult bindingResult,
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> createImage(@RequestBody ImageCreateDto image,
                                                   @RequestParam("file") MultipartFile file) {
-        if (bindingResult.hasErrors()) {
-            throw new CustomValidException(bindingResult.getAllErrors().toString());
-        }
         if (imageService.createImage(image, file)) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -83,14 +80,6 @@ public class ImageController {
     @PutMapping("/place_id")
     public ResponseEntity<HttpStatus> updateImagePlaceId(@RequestBody @Valid ImageUpdatePlaceIdDto image) {
         if (imageService.updateImagePlaceId(image)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
-    }
-
-    @PutMapping("/bites")
-    public ResponseEntity<HttpStatus> updateImageBites(@RequestParam Long id, MultipartFile file) {
-        if (imageService.updateImageBytes(id, file)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);

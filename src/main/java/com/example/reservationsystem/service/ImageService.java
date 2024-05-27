@@ -1,6 +1,5 @@
 package com.example.reservationsystem.service;
 
-import com.example.reservationsystem.exeption.EmptyFileException;
 import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Image;
 import com.example.reservationsystem.model.Place;
@@ -44,14 +43,12 @@ public class ImageService {
 
     public Boolean createImage(ImageCreateDto imageCreateDto, MultipartFile file) {
         Image image = new Image();
-        if (!file.isEmpty()) {
+        if(file.getSize()!=0){
             try {
-                image.setData(file.getBytes());
+                image = toImageEntity(file);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        } else {
-            throw new EmptyFileException("Image file is empty");
         }
         Optional<Place> placeFromDB = placeRepository.findById(imageCreateDto.getPlace_id());
         Optional<Event> eventFromDB = eventRepository.findById(imageCreateDto.getEvent_id());
@@ -66,6 +63,16 @@ public class ImageService {
         return getImageById(newImage.getId()).isPresent();
     }
 
+    private Image toImageEntity(MultipartFile file) throws IOException {
+        Image image = new Image();
+        image.setName(file.getName());
+        image.setOriginalFileName(file.getOriginalFilename());
+        image.setContentTyne(image.getContentTyne());
+        image.setSize(file.getSize());
+        image.setBytes(file.getBytes());
+        return image;
+    }
+
     public Boolean deleteImageById(Long id) {
         imageRepository.deleteById(id);
         return getImageById(id).isEmpty();
@@ -75,31 +82,23 @@ public class ImageService {
         Optional<Image> imageFromDBOptional = imageRepository.findById(image.getId());
         if (imageFromDBOptional.isPresent()) {
             Image imageFromDB = imageFromDBOptional.get();
-            if (image.getData() != null) {
-                imageFromDB.setData(image.getData());
+            if (image.getBytes() != null) {
+                imageFromDB.setBytes(image.getBytes());
+            }
+            if (image.getSize() != 0) {
+                imageFromDB.setSize(image.getSize());
+            }
+            if (image.getContentTyne() != null) {
+                imageFromDB.setContentTyne(image.getContentTyne());
+            }
+            if (image.getName() != null) {
+                imageFromDB.setName(image.getName());
+            }
+            if (image.getOriginalFileName() != null) {
+                imageFromDB.setOriginalFileName(image.getOriginalFileName());
             }
             imageFromDB.setEvent(image.getEvent());
             imageFromDB.setPlace(image.getPlace());
-            imageFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
-            Image updateImage = imageRepository.saveAndFlush(imageFromDB);
-            return updateImage.equals(imageFromDB);
-        }
-        return false;
-    }
-
-    public Boolean updateImageBytes(Long id, MultipartFile file) {
-        Optional<Image> imageFromDBOptional = imageRepository.findById(id);
-        if (imageFromDBOptional.isPresent()) {
-            Image imageFromDB = imageFromDBOptional.get();
-            if (!file.isEmpty()) {
-                try {
-                    imageFromDB.setData(file.getBytes());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
-                throw new EmptyFileException("Image file is empty");
-            }
             imageFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Image updateImage = imageRepository.saveAndFlush(imageFromDB);
             return updateImage.equals(imageFromDB);

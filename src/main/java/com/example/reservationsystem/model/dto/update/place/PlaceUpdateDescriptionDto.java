@@ -14,4 +14,6 @@ public class PlaceUpdateDescriptionDto {
     @Size(max = 200)
     private String description;
 }
-//TODO Status, when user update change chTimetamp, add fiela createTi and changeTi
+//TODO Status глянуть что с ним делать
+//TODO подтвержение по email
+//TODO метрики с кафкой
