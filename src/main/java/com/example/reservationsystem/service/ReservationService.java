@@ -6,6 +6,7 @@ import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Reservation;
 import com.example.reservationsystem.model.User;
 import com.example.reservationsystem.model.dto.create.ReservationCreateDto;
+import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateCommentDto;
 import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateEventIdDto;
 import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateUserIdDto;
 import com.example.reservationsystem.repository.EventRepository;
@@ -59,7 +60,7 @@ public class ReservationService {
             if (!(eventRepository.saveAndFlush(event).equals(event))) {
                 throw new UpdateException("Update Event failed.");
             }
-            reservation.setStatus(true);
+            reservation.setComment(reservationFromDto.getComment());
             reservation.setUser(userFromDB.get());
             reservation.setEvent(event);
             reservation.setCreated(Timestamp.valueOf(LocalDateTime.now()));
@@ -80,9 +81,7 @@ public class ReservationService {
         Optional<Reservation> reservationFromDBOptional = reservationRepository.findById(reservation.getId());
         if (reservationFromDBOptional.isPresent()) {
             Reservation reservationFromDB = reservationFromDBOptional.get();
-            if (reservation.getStatus() != null) {
-                reservationFromDB.setStatus(reservation.getStatus());
-            }
+            reservationFromDB.setComment(reservation.getComment());
             reservationFromDB.setEvent(reservation.getEvent());
             reservationFromDB.setUser(reservation.getUser());
             reservationFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
@@ -119,6 +118,18 @@ public class ReservationService {
             } else {
                 throw new NoSuchElementException("Event not found.");
             }
+            reservationFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
+            Reservation updateReservation = reservationRepository.saveAndFlush(reservationFromDB);
+            return updateReservation.equals(reservationFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updateReservationComment(ReservationUpdateCommentDto reservation) {
+        Optional<Reservation> reservationFromDBOptional = reservationRepository.findById(reservation.getId());
+        if (reservationFromDBOptional.isPresent()) {
+            Reservation reservationFromDB = reservationFromDBOptional.get();
+            reservationFromDB.setComment(reservation.getComment());
             reservationFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Reservation updateReservation = reservationRepository.saveAndFlush(reservationFromDB);
             return updateReservation.equals(reservationFromDB);

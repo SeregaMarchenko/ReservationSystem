@@ -44,11 +44,6 @@ public class PlaceService {
         return getPlaceById(newPlace.getId()).isPresent();
     }
 
-    public Boolean deletePlaceById(Long id) {
-        placeRepository.deleteById(id);
-        return getPlaceById(id).isEmpty();
-    }
-
     public Boolean updatePlace(Place place) {
         Optional<Place> placeFromDBOptional = placeRepository.findById(place.getId());
         if (placeFromDBOptional.isPresent()) {
@@ -65,6 +60,11 @@ public class PlaceService {
             return updatePlace.equals(placeFromDB);
         }
         return false;
+    }
+
+    public Boolean deletePlaceById(Long id) {
+        placeRepository.deleteById(id);
+        return getPlaceById(id).isEmpty();
     }
 
     public Boolean updatePlaceName(PlaceUpdateNameDto place) {

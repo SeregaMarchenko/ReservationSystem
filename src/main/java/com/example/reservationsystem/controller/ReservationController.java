@@ -3,6 +3,7 @@ package com.example.reservationsystem.controller;
 import com.example.reservationsystem.exeption.CustomValidException;
 import com.example.reservationsystem.model.Reservation;
 import com.example.reservationsystem.model.dto.create.ReservationCreateDto;
+import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateCommentDto;
 import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateEventIdDto;
 import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateUserIdDto;
 import com.example.reservationsystem.service.ReservationService;
@@ -71,6 +72,14 @@ public class ReservationController {
     @PutMapping("/user_id")
     public ResponseEntity<HttpStatus> updateReservationUserId(@RequestBody @Valid ReservationUpdateUserIdDto reservation) {
         if (reservationService.updateReservationUserId(reservation)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping("/comment")
+    public ResponseEntity<HttpStatus> updateReservationComment(@RequestBody @Valid ReservationUpdateCommentDto reservation) {
+        if (reservationService.updateReservationComment(reservation)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);

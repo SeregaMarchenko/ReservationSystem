@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,8 +43,9 @@ public class Reservation {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @Column(columnDefinition = "BOOLEAN DEFAULT true")
-    private Boolean status;
+    @NotNull
+    @Column(name = "comment")
+    private String comment;
 
     @Column(name = "created", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
