@@ -14,7 +14,9 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -24,6 +26,8 @@ import java.sql.Timestamp;
 @Data
 @Component
 @Entity(name = "reviews")
+@ToString(exclude = {"event", "user"})
+@EqualsAndHashCode(exclude = {"event", "user"})
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

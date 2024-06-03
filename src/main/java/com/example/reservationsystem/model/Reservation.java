@@ -16,7 +16,9 @@ import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -27,6 +29,8 @@ import java.sql.Timestamp;
 @Data
 @Component
 @Entity(name = "reservations")
+@ToString(exclude = {"event"})
+@EqualsAndHashCode(exclude = {"event"})
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_seq")
