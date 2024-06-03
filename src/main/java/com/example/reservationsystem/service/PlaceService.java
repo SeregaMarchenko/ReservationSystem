@@ -63,8 +63,11 @@ public class PlaceService {
     }
 
     public Boolean deletePlaceById(Long id) {
-        placeRepository.deleteById(id);
-        return getPlaceById(id).isEmpty();
+        if (placeRepository.existsById(id)) {
+            placeRepository.deleteById(id);
+            return !placeRepository.existsById(id);
+        }
+        return false;
     }
 
     public Boolean updatePlaceName(PlaceUpdateNameDto place) {

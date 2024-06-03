@@ -65,8 +65,11 @@ public class ReviewService {
     }
 
     public Boolean deleteReviewById(Long id) {
-        reviewRepository.deleteById(id);
-        return getReviewById(id).isEmpty();
+        if (reviewRepository.existsById(id)) {
+            reviewRepository.deleteById(id);
+            return !reviewRepository.existsById(id);
+        }
+        return false;
     }
 
     public Boolean updateReview(ReviewUpdateDto review) {

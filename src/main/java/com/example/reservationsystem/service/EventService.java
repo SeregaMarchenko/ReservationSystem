@@ -64,8 +64,11 @@ public class EventService {
     }
 
     public Boolean deleteEventById(Long id) {
-        eventRepository.deleteById(id);
-        return getEventById(id).isEmpty();
+        if (eventRepository.existsById(id)) {
+            eventRepository.deleteById(id);
+            return !eventRepository.existsById(id);
+        }
+        return false;
     }
 
     public Boolean updateEvent(EventUpdateDto event) {

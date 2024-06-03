@@ -41,8 +41,11 @@ public class UserService {
     }
 
     public Boolean deleteUserById(Long id) {
-        userRepository.deleteById(id);
-        return getUserById(id).isEmpty();
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return !userRepository.existsById(id);
+        }
+        return false;
     }
 
     public Boolean updateUser(User user) {

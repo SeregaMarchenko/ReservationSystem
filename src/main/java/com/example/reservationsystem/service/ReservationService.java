@@ -74,8 +74,11 @@ public class ReservationService {
     }
 
     public Boolean deleteReservationById(Long id) {
-        reservationRepository.deleteById(id);
-        return getReservationById(id).isEmpty();
+        if (reservationRepository.existsById(id)) {
+            reservationRepository.deleteById(id);
+            return !reservationRepository.existsById(id);
+        }
+        return false;
     }
 
     public Boolean updateReservation(ReservationUpdateDto reservation) {
