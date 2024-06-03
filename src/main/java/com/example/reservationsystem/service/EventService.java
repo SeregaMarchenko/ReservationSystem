@@ -1,11 +1,12 @@
 package com.example.reservationsystem.service;
 
-import com.example.reservationsystem.exeption.IncorrectCapacityException;
+import com.example.reservationsystem.exeption.custom_exception.IncorrectCapacityException;
 import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Place;
 import com.example.reservationsystem.model.dto.create.EventCreateDto;
 import com.example.reservationsystem.model.dto.update.event.EventUpdateCapacityDto;
 import com.example.reservationsystem.model.dto.update.event.EventUpdateDescriptionDto;
+import com.example.reservationsystem.model.dto.update.event.EventUpdateDto;
 import com.example.reservationsystem.model.dto.update.event.EventUpdateLocationDto;
 import com.example.reservationsystem.model.dto.update.event.EventUpdateNameDto;
 import com.example.reservationsystem.model.dto.update.event.EventUpdatePlaceIdDto;
@@ -67,7 +68,7 @@ public class EventService {
         return getEventById(id).isEmpty();
     }
 
-    public Boolean updateEvent(Event event) {
+    public Boolean updateEvent(EventUpdateDto event) {
         Optional<Event> eventFromDBOptional = eventRepository.findById(event.getId());
         if (eventFromDBOptional.isPresent()) {
             Event eventFromDB = eventFromDBOptional.get();
@@ -84,7 +85,12 @@ public class EventService {
                 eventFromDB.setReservationDate(event.getReservationDate());
             }
             eventFromDB.setDescription(event.getDescription());
-            eventFromDB.setPlace(event.getPlace());
+            Optional<Place> placeFromDb = placeRepository.findById(event.getPlace_id());
+            if(placeFromDb.isPresent()) {
+                eventFromDB.setPlace(placeFromDb.get());
+            }else {
+                throw new NoSuchElementException("Place not found.");
+            }
             eventFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Event updateEvent = eventRepository.saveAndFlush(eventFromDB);
             return updateEvent.equals(eventFromDB);
@@ -180,5 +186,21 @@ public class EventService {
 
     public Optional<List<Event>> getEventsWithPagination(int size, int page) {
         return Optional.of(eventRepository.findAll(PageRequest.ofSize(size).withPage(page)).getContent());
+    }
+
+    public Optional<List<Event>> searchEventsByLocation(String location) {
+        return Optional.of(eventRepository.findByLocationContainingIgnoreCase(location));
+    }
+
+    public Optional<List<Event>> searchEventsByName(String name) {
+        return Optional.of(eventRepository.findByNameContainingIgnoreCase(name));
+    }
+
+    public Optional<List<Event>> searchEventsByDescription(String description) {
+        return Optional.of(eventRepository.findByDescriptionContainingIgnoreCase(description));
+    }
+
+    public Optional<List<Event>> searchEventsByCapacity(Integer capacity) {
+        return Optional.of(eventRepository.findByCapacity(capacity));
     }
 }

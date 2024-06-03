@@ -1,4 +1,4 @@
-package com.example.reservationsystem.model.dto.update.user;
+package com.example.reservationsystem.security.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -7,11 +7,13 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class UserUpdateFirstnameDto {
-    @NotNull
-    private Long id;
-
+public class AuthRequestDto {
     @NotNull
     @Size(min = 7, max = 20)
-    private String firstname;
+    private String username;
+
+    @NotNull
+    @Size(min = 10, max = 30)
+    private String password;
+
 }

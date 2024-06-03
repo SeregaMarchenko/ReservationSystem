@@ -1,6 +1,7 @@
 package com.example.reservationsystem.security.model;
 
 import com.example.reservationsystem.model.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,6 +16,7 @@ import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.engine.spi.CascadeStyle;
 import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
@@ -28,8 +30,8 @@ public class UserSecurity {
     @SequenceGenerator(name = "user_security_seq", sequenceName = "user_security_sequence", allocationSize = 1)
     private Long id;
 
-    @Column(name = "login", nullable = false, unique = true)
-    private String login;
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -44,7 +46,7 @@ public class UserSecurity {
     @Column(name = "is_blocked", nullable = false)
     private Boolean isBlocked;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     private User user;
 }

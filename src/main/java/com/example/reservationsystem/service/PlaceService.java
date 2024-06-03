@@ -95,7 +95,7 @@ public class PlaceService {
         Optional<Place> placeFromDBOptional = placeRepository.findById(place.getId());
         if (placeFromDBOptional.isPresent()) {
             Place placeFromDB = placeFromDBOptional.get();
-            placeFromDB.setName(place.getLocation());
+            placeFromDB.setLocation(place.getLocation());
             placeFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Place updatePlace = placeRepository.saveAndFlush(placeFromDB);
             return updatePlace.equals(placeFromDB);
@@ -109,5 +109,17 @@ public class PlaceService {
 
     public Optional<List<Place>> getPlacesWithPagination(int size, int page) {
         return Optional.of(placeRepository.findAll(PageRequest.ofSize(size).withPage(page)).getContent());
+    }
+
+    public Optional<List<Place>> searchPlacesByLocation(String location) {
+        return Optional.of(placeRepository.findByLocationContainingIgnoreCase(location));
+    }
+
+    public Optional<List<Place>> searchPlacesByName(String name) {
+        return Optional.of(placeRepository.findByNameContainingIgnoreCase(name));
+    }
+
+    public Optional<List<Place>> searchPlacesByDescription(String description) {
+        return Optional.of(placeRepository.findByDescriptionContainingIgnoreCase(description));
     }
 }

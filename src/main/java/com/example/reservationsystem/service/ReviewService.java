@@ -5,6 +5,7 @@ import com.example.reservationsystem.model.Review;
 import com.example.reservationsystem.model.User;
 import com.example.reservationsystem.model.dto.create.ReviewCreateDto;
 import com.example.reservationsystem.model.dto.update.review.ReviewUpdateCommentDto;
+import com.example.reservationsystem.model.dto.update.review.ReviewUpdateDto;
 import com.example.reservationsystem.model.dto.update.review.ReviewUpdateEventIdDto;
 import com.example.reservationsystem.model.dto.update.review.ReviewUpdateUserIdDto;
 import com.example.reservationsystem.repository.EventRepository;
@@ -68,18 +69,25 @@ public class ReviewService {
         return getReviewById(id).isEmpty();
     }
 
-    public Boolean updateReview(Review review) {
+    public Boolean updateReview(ReviewUpdateDto review) {
         Optional<Review> reviewFromDBOptional = reviewRepository.findById(review.getId());
         if (reviewFromDBOptional.isPresent()) {
             Review reviewFromDB = reviewFromDBOptional.get();
-            if (review.getDate() != null) {
-                reviewFromDB.setDate(review.getDate());
-            }
             if (review.getRating() != 0) {
                 reviewFromDB.setRating(review.getRating());
             }
-            reviewFromDB.setEvent(review.getEvent());
-            reviewFromDB.setUser(review.getUser());
+            Optional<User> userFromDB = userRepository.findById(review.getUser_id());
+            if (userFromDB.isPresent()) {
+                reviewFromDB.setUser(userFromDB.get());
+            } else {
+                throw new NoSuchElementException("User not found.");
+            }
+            Optional<Event> eventFromDB = eventRepository.findById(review.getEvent_id());
+            if (eventFromDB.isPresent()) {
+                reviewFromDB.setEvent(eventFromDB.get());
+            } else {
+                throw new NoSuchElementException("Event not found.");
+            }
             reviewFromDB.setComment(review.getComment());
             reviewFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Review updateReview = reviewRepository.saveAndFlush(reviewFromDB);

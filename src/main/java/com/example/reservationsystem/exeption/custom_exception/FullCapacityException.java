@@ -1,4 +1,4 @@
-package com.example.reservationsystem.exeption;
+package com.example.reservationsystem.exeption.custom_exception;
 
 public class FullCapacityException extends RuntimeException {
     private String message;

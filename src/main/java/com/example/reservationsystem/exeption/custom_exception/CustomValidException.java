@@ -1,4 +1,4 @@
-package com.example.reservationsystem.exeption;
+package com.example.reservationsystem.exeption.custom_exception;
 
 public class CustomValidException extends RuntimeException {
     private String message;

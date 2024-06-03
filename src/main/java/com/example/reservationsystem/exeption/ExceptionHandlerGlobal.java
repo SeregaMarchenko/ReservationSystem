@@ -1,5 +1,12 @@
 package com.example.reservationsystem.exeption;
 
+import com.example.reservationsystem.exeption.custom_exception.AccessException;
+import com.example.reservationsystem.exeption.custom_exception.CustomValidException;
+import com.example.reservationsystem.exeption.custom_exception.EmptyFileException;
+import com.example.reservationsystem.exeption.custom_exception.FullCapacityException;
+import com.example.reservationsystem.exeption.custom_exception.JwtException;
+import com.example.reservationsystem.exeption.custom_exception.SameUserInDatabase;
+import com.example.reservationsystem.exeption.custom_exception.UpdateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -45,5 +52,23 @@ public class ExceptionHandlerGlobal {
     public ResponseEntity<HttpStatusCode> runtimeExceptionHandler(Exception exception) {
         log.error("runtime exception: " + exception);
         return new ResponseEntity<>(HttpStatusCode.valueOf(400));
+    }
+
+    @ExceptionHandler(value = {SameUserInDatabase.class})
+    public ResponseEntity<HttpStatusCode> sameUserInDatabase(Exception exception) {
+        log.error(String.valueOf(exception));
+        return new ResponseEntity<>(HttpStatusCode.valueOf(409));
+    }
+
+    @ExceptionHandler(value = {JwtException.class})
+    public ResponseEntity<HttpStatusCode> jwtException(Exception exception) {
+        log.error("jwt exception: " + exception);
+        return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+    }
+
+    @ExceptionHandler(value = {AccessException.class})
+    public ResponseEntity<HttpStatusCode> accessException(Exception exception) {
+        log.error("access exception: " + exception);
+        return new ResponseEntity<>(HttpStatusCode.valueOf(401));
     }
 }

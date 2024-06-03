@@ -12,6 +12,6 @@ public class AdultValidator implements ConstraintValidator<Adult, Integer> {
 
     @Override
     public boolean isValid(Integer value, ConstraintValidatorContext context) {
-        return value > 18;
+        return value >= 18;
     }
 }

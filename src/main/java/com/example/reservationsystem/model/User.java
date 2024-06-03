@@ -27,10 +27,7 @@ public class User {
     private Long id;
 
     @Column(name = "username", nullable = false)
-    private String firstname;
-
-    @Column(name = "lastname", nullable = false)
-    private String lastname;
+    private String username;
 
     @Column(name = "age", nullable = false)
     private Integer age;

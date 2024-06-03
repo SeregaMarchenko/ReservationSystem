@@ -1,12 +1,13 @@
 package com.example.reservationsystem.service;
 
-import com.example.reservationsystem.exeption.FullCapacityException;
-import com.example.reservationsystem.exeption.UpdateException;
+import com.example.reservationsystem.exeption.custom_exception.FullCapacityException;
+import com.example.reservationsystem.exeption.custom_exception.UpdateException;
 import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Reservation;
 import com.example.reservationsystem.model.User;
 import com.example.reservationsystem.model.dto.create.ReservationCreateDto;
 import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateCommentDto;
+import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateDto;
 import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateEventIdDto;
 import com.example.reservationsystem.model.dto.update.reservation.ReservationUpdateUserIdDto;
 import com.example.reservationsystem.repository.EventRepository;
@@ -77,13 +78,23 @@ public class ReservationService {
         return getReservationById(id).isEmpty();
     }
 
-    public Boolean updateReservation(Reservation reservation) {
+    public Boolean updateReservation(ReservationUpdateDto reservation) {
         Optional<Reservation> reservationFromDBOptional = reservationRepository.findById(reservation.getId());
         if (reservationFromDBOptional.isPresent()) {
             Reservation reservationFromDB = reservationFromDBOptional.get();
             reservationFromDB.setComment(reservation.getComment());
-            reservationFromDB.setEvent(reservation.getEvent());
-            reservationFromDB.setUser(reservation.getUser());
+            Optional<User> userFromDB = userRepository.findById(reservation.getUser_id());
+            if (userFromDB.isPresent()) {
+                reservationFromDB.setUser(userFromDB.get());
+            } else {
+                throw new NoSuchElementException("User not found.");
+            }
+            Optional<Event> eventFromDB = eventRepository.findById(reservation.getEvent_id());
+            if (eventFromDB.isPresent()) {
+                reservationFromDB.setEvent(eventFromDB.get());
+            } else {
+                throw new NoSuchElementException("Event not found.");
+            }
             reservationFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Reservation updateReservation = reservationRepository.saveAndFlush(reservationFromDB);
             return updateReservation.equals(reservationFromDB);
@@ -112,7 +123,7 @@ public class ReservationService {
         Optional<Reservation> reservationFromDBOptional = reservationRepository.findById(reservation.getId());
         if (reservationFromDBOptional.isPresent()) {
             Reservation reservationFromDB = reservationFromDBOptional.get();
-            Optional<Event> eventFromDB = eventRepository.findById(reservation.getUser_id());
+            Optional<Event> eventFromDB = eventRepository.findById(reservation.getEvent_id());
             if (eventFromDB.isPresent()) {
                 reservationFromDB.setEvent(eventFromDB.get());
             } else {

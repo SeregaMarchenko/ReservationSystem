@@ -3,9 +3,7 @@ package com.example.reservationsystem.service;
 import com.example.reservationsystem.model.User;
 import com.example.reservationsystem.model.dto.create.UserCreateDto;
 import com.example.reservationsystem.model.dto.update.user.UserUpdateAgeDto;
-import com.example.reservationsystem.model.dto.update.user.UserUpdateFirstnameDto;
-import com.example.reservationsystem.model.dto.update.user.UserUpdateLastnameDto;
-import com.example.reservationsystem.repository.ImageRepository;
+import com.example.reservationsystem.model.dto.update.user.UserUpdateUsernameDto;
 import com.example.reservationsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, ImageRepository imageRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -34,8 +32,7 @@ public class UserService {
 
     public Boolean createUser(UserCreateDto userFromDto) {
         User user = new User();
-        user.setLastname(userFromDto.getLastname());
-        user.setFirstname(userFromDto.getFirstname());
+        user.setUsername(userFromDto.getUsername());
         user.setAge(userFromDto.getAge());
         user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         user.setChanged(Timestamp.valueOf(LocalDateTime.now()));
@@ -52,11 +49,8 @@ public class UserService {
         Optional<User> userFromDBOptional = userRepository.findById(user.getId());
         if (userFromDBOptional.isPresent()) {
             User userFromDB = userFromDBOptional.get();
-            if (user.getFirstname() != null) {
-                userFromDB.setFirstname(user.getFirstname());
-            }
-            if (user.getLastname() != null) {
-                userFromDB.setLastname(user.getLastname());
+            if (user.getUsername() != null) {
+                userFromDB.setUsername(user.getUsername());
             }
             if (user.getAge() != null) {
                 userFromDB.setAge(user.getAge());
@@ -68,23 +62,11 @@ public class UserService {
         return false;
     }
 
-    public Boolean updateUserFirstname(UserUpdateFirstnameDto user) {
+    public Boolean updateUsername(UserUpdateUsernameDto user) {
         Optional<User> userFromDBOptional = userRepository.findById(user.getId());
         if (userFromDBOptional.isPresent()) {
             User userFromDB = userFromDBOptional.get();
-            userFromDB.setFirstname(user.getFirstname());
-            userFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
-            User updateUser = userRepository.saveAndFlush(userFromDB);
-            return updateUser.equals(userFromDB);
-        }
-        return false;
-    }
-
-    public Boolean updateUserLastname(UserUpdateLastnameDto user) {
-        Optional<User> userFromDBOptional = userRepository.findById(user.getId());
-        if (userFromDBOptional.isPresent()) {
-            User userFromDB = userFromDBOptional.get();
-            userFromDB.setLastname(user.getLastname());
+            userFromDB.setUsername(user.getUsername());
             userFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             User updateUser = userRepository.saveAndFlush(userFromDB);
             return updateUser.equals(userFromDB);

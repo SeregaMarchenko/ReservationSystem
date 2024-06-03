@@ -1,4 +1,4 @@
-package com.example.reservationsystem.model.dto.create;
+package com.example.reservationsystem.security.dto;
 
 import com.example.reservationsystem.annotation.Adult;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +8,15 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class UserCreateDto {
+public class RegistrationDto {
+    @NotNull
+    @Size(min = 7, max = 20)
+    private String login;
+
+    @NotNull
+    @Size(min = 10, max = 30)
+    private String userPassword;
+
     @NotNull
     @Size(min = 7, max = 20)
     private String username;
@@ -16,4 +24,5 @@ public class UserCreateDto {
     @NotNull
     @Adult
     private Integer age;
+
 }

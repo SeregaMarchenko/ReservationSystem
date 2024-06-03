@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class UserUpdateLastnameDto {
+public class UserUpdateUsernameDto {
     @NotNull
     private Long id;
 
     @NotNull
     @Size(min = 7, max = 20)
-    private String lastname;
+    private String username;
 }
