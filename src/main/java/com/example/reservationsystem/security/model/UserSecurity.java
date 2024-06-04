@@ -1,6 +1,7 @@
 package com.example.reservationsystem.security.model;
 
 import com.example.reservationsystem.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +16,9 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.engine.spi.CascadeStyle;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +26,8 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @Data
 @Component
+@ToString(exclude = "user")
+@EqualsAndHashCode(exclude = "user")
 @Entity(name = "user_security")
 public class UserSecurity {
     @Id
@@ -48,5 +53,6 @@ public class UserSecurity {
 
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonIgnore
     private User user;
 }
