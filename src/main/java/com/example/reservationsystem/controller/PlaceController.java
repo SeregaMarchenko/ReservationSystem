@@ -40,7 +40,7 @@ public class PlaceController {
         this.placeService = placeService;
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping
     public ResponseEntity<List<Place>> getAllPlaces() {
         Optional<List<Place>> result = placeService.getAllPlaces();
@@ -48,7 +48,7 @@ public class PlaceController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/search/location/{location}")
     public ResponseEntity<List<Place>> searchPlacesByLocation(@PathVariable("location") String location) {
         Optional<List<Place>> result = placeService.searchPlacesByLocation(location);
@@ -56,7 +56,7 @@ public class PlaceController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/search/description/{description}")
     public ResponseEntity<List<Place>> searchPlacesByDescription(@PathVariable("description") String description) {
         Optional<List<Place>> result = placeService.searchPlacesByDescription(description);
@@ -64,7 +64,7 @@ public class PlaceController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/search/name/{name}")
     public ResponseEntity<List<Place>> searchPlacesByName(@PathVariable("name") String name) {
         Optional<List<Place>> result = placeService.searchPlacesByName(name);
@@ -72,7 +72,7 @@ public class PlaceController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/{id}")
     public ResponseEntity<Place> getPlaceById(@PathVariable("id") Long id) {
         Optional<Place> result = placeService.getPlaceById(id);

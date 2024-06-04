@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -59,15 +58,6 @@ public class ReservationController {
         return result.map(reservation -> new ResponseEntity<>(reservation, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-    /*@PreAuthorize("hasAnyRole('ADMIN','USER')")
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteReservationByIdCurrentUser(@RequestParam("id") Long id) {
-        if (userSecurityService.deleteReservationByIdCurrentUser(id)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
-    }*/
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping

@@ -12,7 +12,6 @@ import com.example.reservationsystem.model.dto.update.event.EventUpdatePlaceIdDt
 import com.example.reservationsystem.model.dto.update.event.EventUpdateReservationDateDto;
 import com.example.reservationsystem.service.EventService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping
     public ResponseEntity<List<Event>> getAllEvents() {
         Optional<List<Event>> result = eventService.getAllEvents();
@@ -53,7 +52,7 @@ public class EventController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/search/location/{location}")
     public ResponseEntity<List<Event>> searchEventsByLocation(@PathVariable("location") String location) {
         Optional<List<Event>> result = eventService.searchEventsByLocation(location);
@@ -61,7 +60,7 @@ public class EventController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/search/description/{description}")
     public ResponseEntity<List<Event>> searchEventsByDescription(@PathVariable("description") String description) {
         Optional<List<Event>> result = eventService.searchEventsByDescription(description);
@@ -69,7 +68,7 @@ public class EventController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/search/name/{name}")
     public ResponseEntity<List<Event>> searchEventsByName(@PathVariable("name") String name) {
         Optional<List<Event>> result = eventService.searchEventsByName(name);
@@ -77,7 +76,7 @@ public class EventController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/search/capacity/{capacity}")
     public ResponseEntity<List<Event>> searchEventsByCapacity(@PathVariable("capacity") Integer capacity) {
         Optional<List<Event>> result = eventService.searchEventsByCapacity(capacity);
@@ -85,7 +84,7 @@ public class EventController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/{id}")
     public ResponseEntity<Event> getEventById(@PathVariable("id") Long id) {
         Optional<Event> result = eventService.getEventById(id);
@@ -177,7 +176,7 @@ public class EventController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/sort/{field}")
     public ResponseEntity<List<Event>> getAllEventsAndSortByField(@PathVariable("field") String field) {
         Optional<List<Event>> result = eventService.getAllEventsAndSortByField(field);
@@ -185,7 +184,7 @@ public class EventController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/sort/{field}/{page}")
     public ResponseEntity<List<Event>> getAllEventsAndSortByField(@PathVariable("field") Integer field, @PathVariable("page") Integer page) {
         Optional<List<Event>> result = eventService.getEventsWithPagination(field, page);

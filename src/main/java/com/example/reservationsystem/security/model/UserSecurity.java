@@ -19,7 +19,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.engine.spi.CascadeStyle;
 import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
@@ -51,7 +50,7 @@ public class UserSecurity {
     @Column(name = "is_blocked", nullable = false)
     private Boolean isBlocked;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonIgnore
     private User user;

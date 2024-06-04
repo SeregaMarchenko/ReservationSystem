@@ -10,7 +10,6 @@ import com.example.reservationsystem.model.dto.update.review.ReviewUpdateUserIdD
 import com.example.reservationsystem.security.service.UserSecurityService;
 import com.example.reservationsystem.service.ReviewService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -46,7 +44,7 @@ public class ReviewController {
         this.userSecurityService = userSecurityService;
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping
     public ResponseEntity<List<Review>> getAllReviews() {
         Optional<List<Review>> result = reviewService.getAllReviews();
@@ -54,7 +52,7 @@ public class ReviewController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/{id}")
     public ResponseEntity<Review> getReviewById(@PathVariable("id") Long id) {
         Optional<Review> result = reviewService.getReviewById(id);
@@ -119,16 +117,7 @@ public class ReviewController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    /*@PreAuthorize("hasAnyRole('ADMIN','USER')")
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteReviewByIdCurrentUser(@RequestParam("id") Long id) {
-        if (userSecurityService.deleteReviewByIdCurrentUser(id)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
-    }*/
-
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/sort/{field}")
     public ResponseEntity<List<Review>> getAllReviewsAndSortByField(@PathVariable("field") String field) {
         Optional<List<Review>> result = reviewService.getAllReviewsAndSortByField(field);
@@ -136,7 +125,7 @@ public class ReviewController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/sort/{size}/{page}")
     public ResponseEntity<List<Review>> getAllReviewsAndSortByField(@PathVariable("size") Integer size, @PathVariable("page") Integer page) {
         Optional<List<Review>> result = reviewService.getReviewsWithPagination(size, page);

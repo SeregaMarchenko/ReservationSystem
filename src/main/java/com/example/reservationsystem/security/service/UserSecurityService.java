@@ -2,11 +2,7 @@ package com.example.reservationsystem.security.service;
 
 import com.example.reservationsystem.exeption.custom_exception.AccessException;
 import com.example.reservationsystem.exeption.custom_exception.SameUserInDatabase;
-import com.example.reservationsystem.model.Place;
-import com.example.reservationsystem.model.Reservation;
-import com.example.reservationsystem.model.Review;
 import com.example.reservationsystem.model.User;
-import com.example.reservationsystem.model.dto.update.place.PlaceUpdateNameDto;
 import com.example.reservationsystem.repository.ReservationRepository;
 import com.example.reservationsystem.repository.ReviewRepository;
 import com.example.reservationsystem.repository.UserRepository;
@@ -25,8 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -94,46 +88,6 @@ public class UserSecurityService {
         }
         return false;
     }
-
-    /*public boolean deleteReviewByIdCurrentUser(Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-        Optional<UserSecurity> userOptional = userSecurityRepository.findByUsername(currentUsername);
-        if (userOptional.isPresent()) {
-            Optional<Review> reviewFromDb = reviewRepository.findById(id);
-            if (reviewFromDb.isPresent()) {
-                if (Objects.equals(reviewFromDb.get().getId(), userOptional.get().getUserId())) {
-                    reviewRepository.deleteById(reviewFromDb.get().getId());
-                    return true;
-                } else {
-                    throw new AccessException("Review does not belong to this user.");
-                }
-            } else {
-                throw new NoSuchElementException("Review not found.");
-            }
-        }
-        return false;
-    }
-
-    public boolean deleteReservationByIdCurrentUser(Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-        Optional<UserSecurity> userOptional = userSecurityRepository.findByUsername(currentUsername);
-        if (userOptional.isPresent()) {
-            Optional<Reservation> reservationFromDb = reservationRepository.findById(id);
-            if (reservationFromDb.isPresent()) {
-                if (Objects.equals(reservationFromDb.get().getId(), userOptional.get().getUserId())) {
-                    reservationRepository.deleteById(reservationFromDb.get().getId());
-                    return true;
-                } else {
-                    throw new AccessException("Reservation does not belong to this user.");
-                }
-            } else {
-                throw new NoSuchElementException("Reservation not found.");
-            }
-        }
-        return false;
-    }*/
 
     public Boolean updateIsBlock(UserSecurityUpdateIsBlockDto userSecurityUpdateIsBlockDto) {
         Optional<UserSecurity> userSecurityDBOptional = userSecurityRepository.findById(userSecurityUpdateIsBlockDto.getId());
