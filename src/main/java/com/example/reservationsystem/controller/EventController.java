@@ -183,12 +183,4 @@ public class EventController {
         return result.map(events -> new ResponseEntity<>(events, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    @GetMapping("/sort/{field}/{page}")
-    public ResponseEntity<List<Event>> getAllEventsAndSortByField(@PathVariable("field") Integer field, @PathVariable("page") Integer page) {
-        Optional<List<Event>> result = eventService.getEventsWithPagination(field, page);
-        return result.map(events -> new ResponseEntity<>(events, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
 }

@@ -7,6 +7,7 @@ import com.example.reservationsystem.model.dto.create.ReviewCreateDto;
 import com.example.reservationsystem.model.dto.update.review.ReviewUpdateCommentDto;
 import com.example.reservationsystem.model.dto.update.review.ReviewUpdateDto;
 import com.example.reservationsystem.model.dto.update.review.ReviewUpdateEventIdDto;
+import com.example.reservationsystem.model.dto.update.review.ReviewUpdateRatingDto;
 import com.example.reservationsystem.model.dto.update.review.ReviewUpdateUserIdDto;
 import com.example.reservationsystem.repository.EventRepository;
 import com.example.reservationsystem.repository.ReviewRepository;
@@ -121,6 +122,18 @@ public class ReviewService {
             } else {
                 throw new NoSuchElementException("User not found.");
             }
+            reviewFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
+            Review updateReview = reviewRepository.saveAndFlush(reviewFromDB);
+            return updateReview.equals(reviewFromDB);
+        }
+        return false;
+    }
+
+    public Boolean updateReviewRating(ReviewUpdateRatingDto review) {
+        Optional<Review> reviewFromDBOptional = reviewRepository.findById(review.getId());
+        if (reviewFromDBOptional.isPresent()) {
+            Review reviewFromDB = reviewFromDBOptional.get();
+            reviewFromDB.setRating(review.getRating());
             reviewFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Review updateReview = reviewRepository.saveAndFlush(reviewFromDB);
             return updateReview.equals(reviewFromDB);

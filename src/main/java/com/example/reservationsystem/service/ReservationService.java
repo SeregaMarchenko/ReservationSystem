@@ -73,6 +73,7 @@ public class ReservationService {
         }
     }
 
+    @Transactional
     public Boolean deleteReservationById(Long id) {
         if (reservationRepository.existsById(id)) {
             reservationRepository.deleteById(id);

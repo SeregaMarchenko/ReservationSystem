@@ -3,6 +3,7 @@ package com.example.reservationsystem.exeption;
 import com.example.reservationsystem.exeption.custom_exception.AccessException;
 import com.example.reservationsystem.exeption.custom_exception.CustomValidException;
 import com.example.reservationsystem.exeption.custom_exception.EmptyFileException;
+import com.example.reservationsystem.exeption.custom_exception.FieldException;
 import com.example.reservationsystem.exeption.custom_exception.FullCapacityException;
 import com.example.reservationsystem.exeption.custom_exception.JwtException;
 import com.example.reservationsystem.exeption.custom_exception.SameUserInDatabase;
@@ -70,5 +71,11 @@ public class ExceptionHandlerGlobal {
     public ResponseEntity<HttpStatusCode> accessException(Exception exception) {
         log.error("access exception: " + exception);
         return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+    }
+
+    @ExceptionHandler(value = {FieldException.class})
+    public ResponseEntity<HttpStatusCode> fieldException(Exception exception) {
+        log.error("field exception: " + exception);
+        return new ResponseEntity<>(HttpStatusCode.valueOf(400));
     }
 }

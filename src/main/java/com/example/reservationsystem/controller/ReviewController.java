@@ -6,6 +6,7 @@ import com.example.reservationsystem.model.dto.create.ReviewCreateDto;
 import com.example.reservationsystem.model.dto.update.review.ReviewUpdateCommentDto;
 import com.example.reservationsystem.model.dto.update.review.ReviewUpdateDto;
 import com.example.reservationsystem.model.dto.update.review.ReviewUpdateEventIdDto;
+import com.example.reservationsystem.model.dto.update.review.ReviewUpdateRatingDto;
 import com.example.reservationsystem.model.dto.update.review.ReviewUpdateUserIdDto;
 import com.example.reservationsystem.security.service.UserSecurityService;
 import com.example.reservationsystem.service.ReviewService;
@@ -103,6 +104,15 @@ public class ReviewController {
     @PutMapping("/event_id")
     public ResponseEntity<HttpStatus> updateReviewEventId(@RequestBody @Valid ReviewUpdateEventIdDto review) {
         if (reviewService.updateReviewEventId(review)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PutMapping("/rating")
+    public ResponseEntity<HttpStatus> updateReviewRating(@RequestBody @Valid ReviewUpdateRatingDto review) {
+        if (reviewService.updateReviewRating(review)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);

@@ -8,7 +8,6 @@ import com.example.reservationsystem.model.dto.update.place.PlaceUpdateLocationD
 import com.example.reservationsystem.model.dto.update.place.PlaceUpdateNameDto;
 import com.example.reservationsystem.service.PlaceService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,18 +136,10 @@ public class PlaceController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/sort/{field}")
     public ResponseEntity<List<Place>> getAllPlacesAndSortByField(@PathVariable("field") String field) {
         Optional<List<Place>> result = placeService.getAllPlacesAndSortByField(field);
-        return result.map(places -> new ResponseEntity<>(places, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @PermitAll
-    @GetMapping("/sort/{size}/{page}")
-    public ResponseEntity<List<Place>> getAllPlacesAndSortByField(@PathVariable("size") Integer size, @PathVariable("page") Integer page) {
-        Optional<List<Place>> result = placeService.getPlacesWithPagination(size, page);
         return result.map(places -> new ResponseEntity<>(places, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

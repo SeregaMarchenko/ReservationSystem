@@ -1,5 +1,6 @@
 package com.example.reservationsystem.service;
 
+import com.example.reservationsystem.exeption.custom_exception.FieldException;
 import com.example.reservationsystem.exeption.custom_exception.IncorrectCapacityException;
 import com.example.reservationsystem.model.Event;
 import com.example.reservationsystem.model.Place;
@@ -14,7 +15,6 @@ import com.example.reservationsystem.model.dto.update.event.EventUpdateReservati
 import com.example.reservationsystem.repository.EventRepository;
 import com.example.reservationsystem.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -89,9 +89,9 @@ public class EventService {
             }
             eventFromDB.setDescription(event.getDescription());
             Optional<Place> placeFromDb = placeRepository.findById(event.getPlace_id());
-            if(placeFromDb.isPresent()) {
+            if (placeFromDb.isPresent()) {
                 eventFromDB.setPlace(placeFromDb.get());
-            }else {
+            } else {
                 throw new NoSuchElementException("Place not found.");
             }
             eventFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
@@ -184,11 +184,13 @@ public class EventService {
 
 
     public Optional<List<Event>> getAllEventsAndSortByField(String field) {
-        return Optional.of(eventRepository.findAll(Sort.by(field)));
-    }
-
-    public Optional<List<Event>> getEventsWithPagination(int size, int page) {
-        return Optional.of(eventRepository.findAll(PageRequest.ofSize(size).withPage(page)).getContent());
+        if (field.equals("name") || field.equals("reservationDate") || field.equals("location") ||
+                field.equals("description") || field.equals("capacity") || field.equals("placeId") ||
+                field.equals("created") || field.equals("changed")) {
+            return Optional.of(eventRepository.findAll(Sort.by(field)));
+        } else {
+            throw new FieldException(field + " no such field");
+        }
     }
 
     public Optional<List<Event>> searchEventsByLocation(String location) {

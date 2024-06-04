@@ -1,5 +1,6 @@
 package com.example.reservationsystem.service;
 
+import com.example.reservationsystem.exeption.custom_exception.FieldException;
 import com.example.reservationsystem.model.Place;
 import com.example.reservationsystem.model.dto.create.PlaceCreateDto;
 import com.example.reservationsystem.model.dto.update.place.PlaceUpdateDescriptionDto;
@@ -7,7 +8,6 @@ import com.example.reservationsystem.model.dto.update.place.PlaceUpdateLocationD
 import com.example.reservationsystem.model.dto.update.place.PlaceUpdateNameDto;
 import com.example.reservationsystem.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -107,11 +107,12 @@ public class PlaceService {
     }
 
     public Optional<List<Place>> getAllPlacesAndSortByField(String field) {
-        return Optional.of(placeRepository.findAll(Sort.by(field)));
-    }
-
-    public Optional<List<Place>> getPlacesWithPagination(int size, int page) {
-        return Optional.of(placeRepository.findAll(PageRequest.ofSize(size).withPage(page)).getContent());
+        if (field.equals("name") || field.equals("location") ||
+                field.equals("description") || field.equals("created") || field.equals("changed")) {
+            return Optional.of(placeRepository.findAll(Sort.by(field)));
+        } else {
+            throw new FieldException(field + " no such field");
+        }
     }
 
     public Optional<List<Place>> searchPlacesByLocation(String location) {
