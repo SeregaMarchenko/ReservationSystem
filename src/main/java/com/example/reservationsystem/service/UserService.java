@@ -3,6 +3,7 @@ package com.example.reservationsystem.service;
 import com.example.reservationsystem.model.User;
 import com.example.reservationsystem.model.dto.create.UserCreateDto;
 import com.example.reservationsystem.model.dto.update.user.UserUpdateAgeDto;
+import com.example.reservationsystem.model.dto.update.user.UserUpdateDto;
 import com.example.reservationsystem.model.dto.update.user.UserUpdateUsernameDto;
 import com.example.reservationsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,16 +49,12 @@ public class UserService {
         return false;
     }
 
-    public Boolean updateUser(User user) {
+    public Boolean updateUser(UserUpdateDto user) {
         Optional<User> userFromDBOptional = userRepository.findById(user.getId());
         if (userFromDBOptional.isPresent()) {
             User userFromDB = userFromDBOptional.get();
-            if (user.getUsername() != null) {
-                userFromDB.setUsername(user.getUsername());
-            }
-            if (user.getAge() != null) {
-                userFromDB.setAge(user.getAge());
-            }
+            userFromDB.setUsername(user.getUsername());
+            userFromDB.setAge(user.getAge());
             userFromDB.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             User updateUser = userRepository.saveAndFlush(userFromDB);
             return updateUser.equals(userFromDB);

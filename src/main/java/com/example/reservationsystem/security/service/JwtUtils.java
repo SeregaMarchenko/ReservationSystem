@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
 @Component
 public class JwtUtils {
     @Value("${jwt.secret}")

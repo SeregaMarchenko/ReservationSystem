@@ -4,6 +4,7 @@ import com.example.reservationsystem.exeption.custom_exception.CustomValidExcept
 import com.example.reservationsystem.model.User;
 import com.example.reservationsystem.model.dto.create.UserCreateDto;
 import com.example.reservationsystem.model.dto.update.user.UserUpdateAgeDto;
+import com.example.reservationsystem.model.dto.update.user.UserUpdateDto;
 import com.example.reservationsystem.model.dto.update.user.UserUpdateUsernameDto;
 import com.example.reservationsystem.security.service.UserSecurityService;
 import com.example.reservationsystem.service.UserService;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @RestController
 @RequestMapping("/user")
 @SecurityRequirement(name = "Bearer Authentication")
@@ -71,7 +71,10 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping
-    public ResponseEntity<HttpStatus> updateUser(@RequestBody User user) {
+    public ResponseEntity<HttpStatus> updateUser(@RequestBody @Valid UserUpdateDto user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new CustomValidException(bindingResult.getAllErrors().toString());
+        }
         if (userService.updateUser(user)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
